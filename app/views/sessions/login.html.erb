@@ -1,0 +1,18 @@
+<h1>Login</h1>
+
+<div class="notice">
+  <p style="color:red">
+    <%= flash[:notice] if flash[:notice] %>
+  </p>
+</div>
+
+<%= form_for :session, url: login_path, method: :post do |f| %>
+  <%= f.text_field :username, placeholder: 'username' %>
+  <%= f.password_field :password, placeholder: 'password' %>
+  <%= f.submit("Login") %>
+<% end %>
+
+
+<br>
+
+No account? <%= link_to 'Signup', signup_path, method: :get %>

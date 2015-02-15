@@ -1,0 +1,18 @@
+<h1>Signup</h1>
+
+
+<div class="notice">
+  <p style="color:red">
+    <%= flash[:notice] if flash[:notice] %>
+  </p>
+</div>
+
+<%= form_for :session, url: signup_path, method: :post do |f| %>
+  <%= f.text_field :username, placeholder: 'username' %>
+  <br>
+  <%= f.text_field :unix, placeholder: 'unix' %>
+  <br>
+  <%= f.password_field :password, placeholder: 'password' %>
+  <br>
+  <%= f.submit("Signup") %>
+<% end %>
