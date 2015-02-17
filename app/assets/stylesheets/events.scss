@@ -1,3 +1,15 @@
 // Place all the styles related to the events controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+.event-pic {
+    img {
+	width: 384;
+	height: 216;
+    }
+    background: url('/assets/tiesto.jpg');
+    &:hover {
+        width: 512;
+        height: 288;
+	background: url('/assets/daft_punk.jpg');
+    }
+}

@@ -1,7 +1,7 @@
 <h1>Events</h1>
 
 <% @events.each do |event| %>
-  <%= render event %>
-  <br>
+  <% i = ['tiesto.jpg', 'daft_punk.jpg'].sample %>  
+  <%= link_to image_tag(i, size: '384x216'), event, class: 'event-pic' %>
   <br>
 <% end %>

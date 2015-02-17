@@ -1,0 +1,11 @@
+.event-pic {
+  background: url("/assets/tiesto.jpg"); }
+  .event-pic img {
+    width: 384;
+    height: 216; }
+  .event-pic:hover {
+    width: 512;
+    height: 288;
+    background: url("/assets/daft_punk.jpg"); }
+
+/*# sourceMappingURL=events.css.map */
