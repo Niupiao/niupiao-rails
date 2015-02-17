@@ -54,6 +54,18 @@
   font-size: 20px;
   color: #2b2b2b;
   position: relative;
-  top: 45%; }
+  top: 35%; }
+.gallery .date {
+  font-weight: bold;
+  font-size: 15px;
+  color: #2b2b2b;
+  position: relative;
+  top: 35%; }
+.gallery .tickets {
+  font-weight: bold;
+  font-size: 10px;
+  color: #2b2b2b;
+  position: relative;
+  top: 35%; }
 
 /*# sourceMappingURL=events.css.map */

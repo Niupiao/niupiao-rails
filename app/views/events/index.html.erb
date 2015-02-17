@@ -5,9 +5,13 @@
     <% @events.each do |event| %>
       <% i = ['tiesto.jpg', 'daft_punk.jpg'].sample %>  
       <li>
-	<a href=<%= event_url(event) %> title="Locomotive" target="_blank">
+	<a href=<%= event_url(event) %> title=<%= event.name %> target="_blank">
           <img src=<%= "/assets/#{i}" %> alt="" />
-          <div class="info"><h1 class="title"><%= event.organizer %></h1></div>
+          <div class="info">
+	    <h1 class="title"><%= event.name %></h1>
+	    <h2 class="date"><%= event.date %></h2>
+	    <h2 class="tickets"><%= "#{event.tickets_sold} out of #{event.total_tickets} tickets sold" %></h2>
+	  </div>
         </a>
       </li>
     <% end %>
