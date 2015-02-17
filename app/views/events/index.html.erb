@@ -3,10 +3,9 @@
 <div class="gallery">
   <ul>
     <% @events.each do |event| %>
-      <% i = ['tiesto.jpg', 'daft_punk.jpg'].sample %>  
       <li>
 	<a href=<%= event_url(event) %> title=<%= event.name %> target="_blank">
-          <img src=<%= "/assets/#{i}" %> alt="" />
+          <img src=<%= event.link %> alt="" />
           <div class="info">
 	    <h1 class="title"><%= event.name %></h1>
 	    <h2 class="date"><%= event.date %></h2>
