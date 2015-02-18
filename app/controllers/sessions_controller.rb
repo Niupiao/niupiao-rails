@@ -7,16 +7,68 @@ class SessionsController < ApplicationController
   def login
     username = params[:session][:username]
     password = params[:session][:password]
-    if User.where(name: username, password: password).any?
-      flash[:notice] = "Welcome, #{username}!"
-      redirect_to :events
-    else
-      flash[:notice] = 'Invalid username/password'
-      render 'sessions/login'
+
+    respond_to do |format|
+      
+      # for HTML
+      format.html do
+        users = User.where(name: username, password: password)
+        if users && users.any?
+          user = users.first
+          session[:current_user_id] = user.id
+          flash[:notice] = "Welcome, #{username}!"
+          redirect_to :events
+        else
+          flash[:notice] = 'Invalid username/password'
+          render 'sessions/login'
+        end        
+      end
+
+      # for JSON
+      format.json do
+        user = User.find_by(name: username)
+        unless user
+          render json: { success: false, message: "No user exists with the username: #{username}", status: :invalid_user_name }
+          return
+        end
+        
+        if authenticate(username, password)
+          if user.api_key
+            
+            if !user.api_key.expired?
+              # user's api key is still good -- no need to make a new one
+              render json: { success: true, message: 'user already has api key', api_key: user.api_key, user: user }
+              return
+              
+            else
+              # user's api key is stale -- destroy the old one, make a new one
+              user.api_key.destroy!
+            end
+          end
+          
+          # make a new api key
+          api_key = ApiKey.new(user: user)
+          if api_key.save && user.save
+            render json: { success: true, message: 'created api key', api_key: api_key, user: user }
+            return
+          else
+            render json: { success: false, message: 'could not save api key' }
+            return
+          end
+          
+        else
+          render json: { success: false, message: 'Invalid password', status: :invalid_password }
+          return
+        end
+        
+      end
+
     end
+
   end
 
   def logout
+    session.delete :current_user_id
   end
 
   def signup_page
@@ -30,5 +82,13 @@ class SessionsController < ApplicationController
       flash[:notice] = 'username taken'
     end
     render 'sessions/login'
+  end
+
+
+  private
+
+  def authenticate(username, password)
+    users = User.where(name: username, password: password)
+    users && users.length == 1
   end
 end
