@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150215014714) do
+ActiveRecord::Schema.define(version: 20150218061257) do
+
+  create_table "api_keys", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "access_token"
+    t.integer  "expires_at"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
 
   create_table "events", force: :cascade do |t|
     t.string   "name"
