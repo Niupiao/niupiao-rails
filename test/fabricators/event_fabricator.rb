@@ -4,7 +4,8 @@ Fabricator(:event) do
   date           { Date.today }
   location       { "#{Faker::Address.city}" }
   description    { "an awesome concert" }
-  link           { ['/assets/tiesto.jpg', '/assets/daft_punk.jpg'].sample }
+  image_path     { ['/assets/tiesto.jpg', '/assets/daft_punk.jpg'].sample }
+  link           { Faker::Internet.url }
   total_tickets  { (100..200).to_a.sample }
   tickets_sold   { (50..75).to_a.sample }
 end

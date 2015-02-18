@@ -5,7 +5,7 @@
     <% @events.each do |event| %>
       <li>
 	<a href=<%= event_url(event) %> title=<%= event.name %> target="_blank">
-          <img src=<%= event.link %> alt="" />
+          <img src=<%= event.image_path %> alt="" />
           <div class="info">
 	    <h1 class="title"><%= event.name %></h1>
 	    <h2 class="date"><%= event.date %></h2>

@@ -6,6 +6,7 @@ class CreateEvents < ActiveRecord::Migration
       t.date :date
       t.string :location
       t.string :description
+      t.string :image_path
       t.string :link
       t.integer :total_tickets
       t.integer :tickets_sold
