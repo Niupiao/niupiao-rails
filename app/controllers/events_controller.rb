@@ -3,6 +3,10 @@ class EventsController < ApplicationController
   before_action :ensure_auth, except: :index
   before_action :ensure_auth_for_index, only: :index
 
+  def new
+    @event = Event.new
+  end
+
   def index
     @events = Event.all
     respond_to do |format|

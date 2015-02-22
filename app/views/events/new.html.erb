@@ -1,0 +1,7 @@
+<%= form_for @event, url: { action: :create }, html: { class: 'nifty_form' } do |f| %>
+  <%= f.text_field :name, placeholder: 'name' %>
+  <br>
+  <%= f.text_field :organizer, placeholder: 'organizer' %>
+  <br>
+  <%= f.submit 'Create' %>
+<% end %>
