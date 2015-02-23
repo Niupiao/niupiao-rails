@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   def ensure_token(json_array_request=false)
     case request.format
     when Mime::JSON
-      unless authenticate_with_http_token { |token, options| User.with_access_token(token) }
+      unless authenticate_with_http_token { |token, options| @current_user = User.with_access_token(token) }
         if json_array_request
           render json: [{ error: :invalid_token }].to_json
         else

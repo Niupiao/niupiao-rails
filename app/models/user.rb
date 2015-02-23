@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
 
   has_one :api_key, dependent: :destroy
+  has_many :tickets
+  has_many :events, through: :tickets
 
   validates :name, presence: true, uniqueness: true
   validates :password, presence: true, uniqueness: true

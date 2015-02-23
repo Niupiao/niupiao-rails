@@ -9,8 +9,10 @@ Rails.application.routes.draw do
   get 'signup', to: 'sessions#signup_page'
   post 'signup', to: 'sessions#signup'
 
+  get 'me/tickets', to: 'tickets#my_tickets'
+  
   resources :events do
-    resources :tickets
+    resources :tickets, shallow: true
   end
 
 end
