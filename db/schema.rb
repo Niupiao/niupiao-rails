@@ -24,7 +24,7 @@ ActiveRecord::Schema.define(version: 20150218061257) do
   create_table "events", force: :cascade do |t|
     t.string   "name"
     t.string   "organizer"
-    t.date     "date"
+    t.datetime "date"
     t.string   "location"
     t.string   "description"
     t.string   "image_path"
