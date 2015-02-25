@@ -13,7 +13,9 @@ class SessionsController < ApplicationController
       
       # for HTML
       format.html do
+        puts "Looking for user with username (#{username}) and password (#{password})"
         users = User.where(name: username, password: password)
+        puts "Found: #{users.inspect}"
         if users && users.any?
           login(users.first)
           flash[:notice] = "Welcome, #{username}!"
