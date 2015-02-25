@@ -1,10 +1,11 @@
 class SessionsController < ApplicationController
-  def login_page
+
+  def new
     @user = User.new
     render 'sessions/login'
   end
 
-  def login
+  def create
     username = params[:session][:username]
     password = params[:session][:password]
 
@@ -14,8 +15,7 @@ class SessionsController < ApplicationController
       format.html do
         users = User.where(name: username, password: password)
         if users && users.any?
-          user = users.first
-          session[:current_user_id] = user.id
+          login(users.first)
           flash[:notice] = "Welcome, #{username}!"
           redirect_to :events
         else
@@ -67,9 +67,8 @@ class SessionsController < ApplicationController
 
   end
 
-  def logout
-    @current_user = nil
-    session.delete :current_user_id
+  def destroy
+    logout
     render 'sessions/login'
   end
 
