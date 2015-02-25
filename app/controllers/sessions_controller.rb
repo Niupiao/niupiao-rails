@@ -70,6 +70,7 @@ class SessionsController < ApplicationController
   def logout
     @current_user = nil
     session.delete :current_user_id
+    render 'sessions/login'
   end
 
   def signup_page
