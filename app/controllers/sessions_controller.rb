@@ -68,6 +68,7 @@ class SessionsController < ApplicationController
   end
 
   def logout
+    @current_user = nil
     session.delete :current_user_id
   end
 
