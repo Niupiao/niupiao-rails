@@ -8,7 +8,6 @@ gem 'faker'
 gem 'rails', '4.2.0'
 
 group :production do
-  gem 'sprockets_better_errors'
   gem 'rails_12factor'
   gem 'pg'
 end
