@@ -7,6 +7,17 @@ class EventsController < ApplicationController
     @event = Event.new
   end
 
+  def create
+    @event = Event.create(event_params)
+    render :index
+  end
+
+  def destroy
+    event = Event.find(params[:id])
+    event.destroy!
+    render :index
+  end
+
   def index
     @events = Event.all
     respond_to do |format|
@@ -18,7 +29,7 @@ class EventsController < ApplicationController
   end
 
   def show
-    @event = Event.find_by(id: params[:id])
+    @event = Event.find(params[:id])
     respond_to do |format|
       format.html
       format.json do
@@ -26,4 +37,20 @@ class EventsController < ApplicationController
       end
     end
   end
+
+  
+  private
+  def event_params
+    params.require(:event).permit(:name, 
+                                  :organizer,
+                                  :date,
+                                  :location,
+                                  :description,
+                                  :image_path,
+                                  :link,
+                                  :total_tickets,
+                                  :tickets_sold
+                                  )
+  end
+
 end

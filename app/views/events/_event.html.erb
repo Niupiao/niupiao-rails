@@ -9,3 +9,6 @@ location: <%= event.location %>
 desc: <%= event.description %>
 <br>
 <%= event.tickets_sold %> / <%= event.total_tickets %> tickets sold
+
+<br>
+<%= link_to 'Destroy', event, method: :delete %>

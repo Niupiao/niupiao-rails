@@ -11,7 +11,7 @@
 
 <div class="gallery">
   <ul>
-    <% @events.each do |event| %>
+    <% Event.all.each do |event| %>
       <li>
 	<a href=<%= event_url(event) %> title=<%= event.name %> target="_blank">
           <img src=<%= event.image_path %> alt="" />
