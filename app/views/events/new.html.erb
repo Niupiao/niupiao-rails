@@ -3,11 +3,15 @@
   <br>
   <%= f.text_field :organizer, placeholder: 'organizer' %>
   <br>
-  <%= f.text_field :date, placeholder: 'date' %>
-  <br>
   <%= f.text_field :location, placeholder: 'location' %>
   <br>
-  <%= f.text_field :desc, placeholder: 'desc' %>
+  <%= f.text_field :description, placeholder: 'description' %>
+  <br>
+  <%= f.text_field :image_path, placeholder: 'image_path' %>
+  <br>
+  <%= f.text_field :total_tickets, placeholder: 'total_tickets' %>
+  <br>
+  <%= f.text_field :tickets_sold, placeholder: 'tickets_sold' %>
   <br>
   <%= f.submit 'Create' %>
 <% end %>
