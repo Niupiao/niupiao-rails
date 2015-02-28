@@ -1,7 +1,7 @@
 Fabricator(:event) do
   name           { Faker::Name.first_name }
   organizer      { "#{Faker::Name.first_name} #{Faker::Name.last_name}" }
-  date           { DateTime.now }
+  date           { DateTime.now + ([60..90].sample).day }
   location       { "#{Faker::Address.city}" }
   description    { "an awesome concert" }
   image_path     { ['/assets/tiesto.jpg', '/assets/daft_punk.jpg'].sample }
