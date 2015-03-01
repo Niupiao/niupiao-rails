@@ -6,6 +6,7 @@ class TicketsController < ApplicationController
   before_action :get_event, only: [:new, :create, :index]
 
   def new
+    @event = Event.find(params[:event_id])
     @ticket = Ticket.new
   end
 
