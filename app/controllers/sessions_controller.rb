@@ -6,8 +6,8 @@ class SessionsController < ApplicationController
   end
 
   def create
-    username = params[:session][:username]
-    password = params[:session][:password]
+    username = params[:username]
+    password = params[:password]
 
     respond_to do |format|
       
