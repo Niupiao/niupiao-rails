@@ -1,11 +1,14 @@
 class SessionsController < ApplicationController
 
+  wrap_parameters format: [:json, :xml, :html]
+
   def new
     @user = User.new
     render 'sessions/login'
   end
 
   def create
+    puts "params: #{params}"
     username = params[:session][:username]
     password = params[:session][:password]
 
