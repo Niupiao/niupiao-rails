@@ -8,9 +8,11 @@ class TicketsController < ApplicationController
   def new
     @event = Event.find(params[:event_id])
     @ticket = Ticket.new
+    @ticket.event = @event
   end
 
   def create
+    puts "TICKET PARAMS: #{ticket_params}"
     @ticket = Ticket.create!(ticket_params)
     respond_to do |format|
       format.html { render :create } 
