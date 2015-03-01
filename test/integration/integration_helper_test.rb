@@ -5,7 +5,7 @@ module IntegrationHelperTest
   end
 
   def login(user)
-    post '/login', {
+    post '/login', session: {
       username: user.name,
       password: user.password
     }
