@@ -9,8 +9,8 @@ class SessionsController < ApplicationController
 
   def create
     puts "params: #{params}"
-    username = params[:session][:username]
-    password = params[:session][:password]
+    username = params[:username] || params[:session][:username]
+    password = params[:password] || params[:session][:password]
 
     respond_to do |format|
       
