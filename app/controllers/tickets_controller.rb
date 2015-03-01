@@ -12,7 +12,10 @@ class TicketsController < ApplicationController
 
   def create
     @ticket = Ticket.create!(ticket_params)
-    render :create
+    respond_to do |format|
+      format.html { render :create } 
+      format.json { render json: @ticket }
+    end
   end
 
   def index
