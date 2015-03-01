@@ -1,1 +1,12 @@
 New ticket for Event: <%= @event.name %>
+
+<%= form_for @ticket, url: { action: :create }, html: { class: 'nifty_form' } do |f| %>
+  <%= f.text_field :status, placeholder: 'status' %>
+  <br>
+  <%= f.text_field :price, placeholder: 'price' %>
+  <br>
+  <%= f.label :event %><br />
+  <%= f.select :event_id, options_for_select(Event.all.map{|s|[s.name, s.id]}) %>
+  <br>
+  <%= f.submit 'Create' %>
+<% end %>
