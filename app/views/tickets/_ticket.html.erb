@@ -1,1 +1,11 @@
-hi
+<% buyer = ticket.user %>
+<%= ticket.status.upcase %> seating for $<%= ticket.price %>
+<% if buyer %>
+  <%= "(bought by #{buyer.name})" %>  
+<% else %>
+  <%= link_to "(buy)", ticket_path(ticket.id), method: :put %>
+<% end %>
+
+
+
+<br>

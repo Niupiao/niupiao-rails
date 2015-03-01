@@ -24,6 +24,11 @@ class TicketsController < ApplicationController
     end
   end
 
+  def update
+    @ticket = Ticket.find(params[:id])
+    @event = Event.find(@ticket.event_id)
+  end
+
   def my_tickets
     respond_to do |format|
       format.json do
