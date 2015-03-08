@@ -4,9 +4,6 @@ class ApiKey < ActiveRecord::Base
   validates :user, presence: true
   validates :access_token, uniqueness: true
 
-  before_create :generate_access_token
-  before_create :generate_expires_at
-
   before_save :generate_access_token
   before_save :generate_expires_at
 
@@ -27,9 +24,7 @@ class ApiKey < ActiveRecord::Base
   end
 
   def generate_access_token
-    begin
-      self.access_token = SecureRandom.hex
-    end while self.class.exists?(access_token: access_token)
+    self.access_token = SecureRandom.hex(122)
   end
 
 end

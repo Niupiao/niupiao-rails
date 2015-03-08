@@ -81,13 +81,40 @@ class SessionsController < ApplicationController
   end
 
   def signup
-    if User.where(name: params[:session][:username]).empty?
-      User.create(name: params[:session][:username], unix: params[:session][:unix], password: params[:session][:password])
-      flash[:notice] = 'successfully signed up'
-    else
-      flash[:notice] = 'username taken'
+
+    # TODO fix param wrapping
+    name = params[:username] || params[:session][:username]
+    unix = params[:unix] || params[:session][:unix]
+    password = params[:password] || params[:session][:password]
+
+    respond_to do |format|
+
+      format.json do
+        if User.where(name: name).empty?
+          user = User.create(name: name, unix: unix, password: password)
+          if user.save
+            api_key = user.api_key
+            render json: { user: user, api_key: api_key }
+          else
+            render json: { error: :creation_fail, message: 'could not save user after creating' }
+          end
+        else
+          render json: { error: :username_taken, message: 'username taken' }
+        end
+      end
+      
+      format.html do
+        if User.where(name: params[:session][:username]).empty?
+          User.create(name: name, unix: unix, password: password)
+          flash[:notice] = 'successfully signed up'
+        else
+          flash[:notice] = 'username taken'
+        end
+        render 'sessions/login'
+      end
+      
     end
-    render 'sessions/login'
+
   end
 
 

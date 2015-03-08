@@ -5,7 +5,9 @@ class User < ActiveRecord::Base
   has_many :events, through: :tickets
 
   validates :name, presence: true, uniqueness: true
-  validates :password, presence: true, uniqueness: true
+  validates :password, presence: true
+
+  before_save :create_api_key
 
   def self.with_access_token(token)
     keys = ApiKey.where(access_token: token)
@@ -30,6 +32,14 @@ class User < ActiveRecord::Base
       json << hash
     end
     json.as_json
+  end
+
+  
+  private
+
+  def create_api_key
+    ApiKey.create!(user: self)
+    #ApiKey.create(user: self, expires_at: (Time.now + 60.days).to_i, access_token: SecureRandom.hex)
   end
 
 end
