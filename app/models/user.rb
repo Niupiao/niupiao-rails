@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
   validates :password, presence: true
 
-  before_save :create_api_key
+  after_save :create_api_key
 
   def self.with_access_token(token)
     keys = ApiKey.where(access_token: token)
