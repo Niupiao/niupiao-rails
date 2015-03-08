@@ -46,10 +46,9 @@ class EventsController < ApplicationController
                                   :date,
                                   :location,
                                   :description,
-                                  :image_path,
+                                  :image,
                                   :link,
-                                  :total_tickets,
-                                  :tickets_sold
+                                  :total_tickets
                                   )
   end
 
