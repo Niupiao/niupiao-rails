@@ -94,12 +94,12 @@ class SessionsController < ApplicationController
           user = User.create(name: name, unix: unix, password: password)
           if user.save
             api_key = user.api_key
-            render json: { user: user, api_key: api_key }
+            render json: { success: true, user: user, api_key: api_key }
           else
-            render json: { error: :creation_fail, message: 'could not save user after creating' }
+            render json: { success: false, message: 'could not save user after creating', status: :creation_fail }
           end
         else
-          render json: { error: :username_taken, message: 'username taken' }
+          render json: { success: false, message: 'username taken', status: :username_taken }
         end
       end
       
