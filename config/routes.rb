@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   get 'login',     to: 'sessions#new'
   post 'login',    to: 'sessions#create'
+  post 'facebooklogin', to: 'facebook#create'
   delete 'logout', to: 'sessions#destroy'
 
   get 'signup', to: 'sessions#signup_page'

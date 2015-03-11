@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  has_one :facebook_identity, dependent: :destroy
+
   has_one :api_key, dependent: :destroy
   has_many :tickets
   has_many :events, through: :tickets
