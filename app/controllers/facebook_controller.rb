@@ -9,8 +9,8 @@ class FacebookController < ApplicationController
           user = User.find_by(id: params[:user_id])
           if user
             # A user exists with that user_id. Let's link their account to their Facebook account!
-            # TODO update facebook params - create_facebook_identity
-            render json: { success: true, user: user, api_key: user.api_key }
+            create_or_update_facebook_identity(user)
+            render json: { success: true, user: user, api_key: user.api_key, facebook_identity: user.facebook_identity }
           else
             # No user exists with that user_id.
             # TODO create a new account from the Facebook params,
@@ -26,20 +26,17 @@ class FacebookController < ApplicationController
   end
   
   private
-  def create_facebook_identity
-    user = User.find_by(id: params[:user_id])
-    if user
-      i = user.facebook_identity || FacebookIdentity.new
-      i.birthday = params[:birthday]
-      i.first_name = params[:first_name]
-      i.middle_name = params[:middle_name]
-      i.last_name = params[:last_name]
-      i.name = params[:name]
-      i.username = params[:username]
-      i.location = params[:location]
-      i.link = params[:facebook_id]
-      user.facebook_identity = i
-      user.save
-    end
+  def create_or_update_facebook_identity(user)
+    i = user.facebook_identity || FacebookIdentity.new
+    i.birthday = params[:birthday]
+    i.first_name = params[:first_name]
+    i.middle_name = params[:middle_name]
+    i.last_name = params[:last_name]
+    i.name = params[:name]
+    i.username = params[:username]
+    i.location = params[:location]
+    i.link = params[:facebook_id]
+    user.facebook_identity = i
+    user.save
   end
 end
