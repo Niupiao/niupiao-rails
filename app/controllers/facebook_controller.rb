@@ -14,7 +14,7 @@ class FacebookController < ApplicationController
           else
             # No user exists with that user_id.
             # Create a new account from the Facebook params
-            # User.create(name: '', unix: '', password: '')
+            # User.create(email: '', name: '', first_name: '', last_name: '', name: '', username: '', password: '')
             # as long as the Facebook account is not linked to an extant account
             # u = User.makeFromFacebookParams(params)
             render json: { success: true, message: 'user created from facebook' }
