@@ -8,6 +8,11 @@
 </div>
 
 <%= form_for :session, url: signup_path, method: :post do |f| %>
+
+  <%= f.text_field :first_name, placeholder: 'first name' %>
+  <br>
+  <%= f.text_field :last_name, placeholder: 'last name' %>
+  <br>
   <%= f.text_field :username, placeholder: 'username' %>
   <br>
   <%= f.text_field :email, placeholder: 'email' %>
