@@ -16,8 +16,8 @@
 end
                 
                 
-user = User.create(name: 'kmc3', unix: 'kmc3', password: 'foobar')
-user2 = User.create(name: 'rhk1', unix: 'rhk1', password: 'foobar')
+user = User.create(username: 'kmc3', email: 'kmc3@williams.edu', password: 'foobar')
+user2 = User.create(username: 'rhk1', email: 'rhk1@williams.edu', password: 'foobar')
 
 a = ApiKey.create(user: user, expires_at: (Time.now + 60.days).to_i, access_token: SecureRandom.hex)
 
