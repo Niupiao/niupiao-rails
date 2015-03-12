@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150218061257) do
+ActiveRecord::Schema.define(version: 20150311195729) do
 
   create_table "api_keys", force: :cascade do |t|
     t.integer  "user_id"
@@ -34,6 +34,23 @@ ActiveRecord::Schema.define(version: 20150218061257) do
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
   end
+
+  create_table "facebook_identities", force: :cascade do |t|
+    t.string   "birthday"
+    t.string   "first_name"
+    t.string   "middle_name"
+    t.string   "last_name"
+    t.string   "name"
+    t.string   "username"
+    t.string   "location"
+    t.string   "link"
+    t.string   "facebook_id"
+    t.integer  "user_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "facebook_identities", ["user_id"], name: "index_facebook_identities_on_user_id"
 
   create_table "tickets", force: :cascade do |t|
     t.integer  "event_id"
