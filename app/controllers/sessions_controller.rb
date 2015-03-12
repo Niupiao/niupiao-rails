@@ -8,17 +8,19 @@ class SessionsController < ApplicationController
   end
 
   def create
-    puts "params: #{params}"
+
     username = params[:username] || params[:session][:username]
+    email = params[:email] || params[:session][:email]
     password = params[:password] || params[:session][:password]
+    name = params[:name] || params[:session][:name]
+    first_name = params[:first_name] || params[:session][:first_name]
+    last_name = params[:last_name] || params[:session][:last_name]
 
     respond_to do |format|
       
       # for HTML
       format.html do
-        puts "Looking for user with username (#{username}) and password (#{password})"
-        users = User.where(name: username, password: password)
-        puts "Found: #{users.inspect}"
+        users = User.where(username: username, password: password)
         if users && users.any?
           login(users.first)
           flash[:notice] = "Welcome, #{username}!"
@@ -31,7 +33,7 @@ class SessionsController < ApplicationController
 
       # for JSON
       format.json do
-        user = User.find_by(name: username)
+        user = User.find_by(username: username)
         unless user
           render json: { success: false, message: "No user exists with the username: #{username}", status: :invalid_user_name }
           return
@@ -83,15 +85,18 @@ class SessionsController < ApplicationController
   def signup
 
     # TODO fix param wrapping
-    name = params[:username] || params[:session][:username]
-    unix = params[:unix] || params[:session][:unix]
+    username = params[:username] || params[:session][:username]
+    email = params[:email] || params[:session][:email]
     password = params[:password] || params[:session][:password]
-
+    name = params[:name] || params[:session][:name]
+    first_name = params[:first_name] || params[:session][:first_name]
+    last_name = params[:last_name] || params[:session][:last_name]
+    
     respond_to do |format|
 
       format.json do
-        if User.where(name: name).empty?
-          user = User.create(name: name, unix: unix, password: password)
+        if User.where(username: username).empty?
+          user = User.create(email: email, username: username, password: password, name: name, first_name: first_name, last_name: last_name)
           if user.save
             api_key = user.api_key
             render json: { success: true, user: user, api_key: api_key }
@@ -104,8 +109,8 @@ class SessionsController < ApplicationController
       end
       
       format.html do
-        if User.where(name: params[:session][:username]).empty?
-          User.create(name: name, unix: unix, password: password)
+        if User.where(username: username).empty?
+          user = User.create(email: email, username: username, password: password, name: name, first_name: first_name, last_name: last_name)
           flash[:notice] = 'successfully signed up'
         else
           flash[:notice] = 'username taken'
@@ -121,7 +126,7 @@ class SessionsController < ApplicationController
   private
 
   def authenticate(username, password)
-    users = User.where(name: username, password: password)
+    users = User.where(username: username, password: password)
     users && users.length == 1
   end
 end

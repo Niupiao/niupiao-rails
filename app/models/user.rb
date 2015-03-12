@@ -6,7 +6,8 @@ class User < ActiveRecord::Base
   has_many :tickets
   has_many :events, through: :tickets
 
-  validates :name, presence: true, uniqueness: true
+  validates :email, presence: true, uniqueness: true
+  validates :username, presence: true, uniqueness: true
   validates :password, presence: true
 
   after_save :create_api_key
