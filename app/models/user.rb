@@ -11,6 +11,12 @@ class User < ActiveRecord::Base
 
   after_save :create_api_key
 
+  def self.with_facebook_id(facebook_id)
+    identities = FacebookIdentity.where(facebook_id: facebook_id)
+    identity = identities ? identities.first : nil
+    return identity ? identity.user : nil
+  end
+  
   def self.with_access_token(token)
     keys = ApiKey.where(access_token: token)
     key = keys ? keys.first : nil
