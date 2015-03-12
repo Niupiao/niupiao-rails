@@ -8,22 +8,17 @@ class SessionsController < ApplicationController
   end
 
   def create
-
-    username = params[:username] || params[:session][:username]
     email = params[:email] || params[:session][:email]
     password = params[:password] || params[:session][:password]
-    name = params[:name] || params[:session][:name]
-    first_name = params[:first_name] || params[:session][:first_name]
-    last_name = params[:last_name] || params[:session][:last_name]
 
     respond_to do |format|
       
       # for HTML
       format.html do
-        users = User.where(email: email, password: password)
-        if users && users.any?
-          login(users.first)
-          flash[:notice] = "Welcome, #{username}!"
+        user = authenticate(email, password)
+        if user
+          login(user)
+          flash[:notice] = "Welcome, #{user.username}!"
           redirect_to :events
         else
           flash[:notice] = 'Invalid username/password'
@@ -38,8 +33,9 @@ class SessionsController < ApplicationController
           render json: { success: false, message: "No user exists with the email: #{email}", status: :invalid_user_name }
           return
         end
-        
-        if authenticate(email, password)
+
+        user = authenticate(email, password)
+        if user
           if user.api_key
             
             if !user.api_key.expired?
@@ -108,10 +104,15 @@ class SessionsController < ApplicationController
       
       format.html do
         if User.where(email: email).empty?
-          user = User.create(email: email, password: password, first_name: first_name, last_name: last_name)
-          flash[:notice] = 'successfully signed up'
+          # TODO check for missing fields
+          user = User.create(username: username,
+                             email: email,
+                             password: password,
+                             first_name: first_name,
+                             last_name: last_name)
+          flash.now[:notice] = 'successfully signed up'
         else
-          flash[:notice] = 'username taken'
+          flash.now[:notice] = "You've already signed up with us!"
         end
         render 'sessions/login'
       end
@@ -124,7 +125,6 @@ class SessionsController < ApplicationController
   private
 
   def authenticate(email, password)
-    users = User.where(email: email, password: password)
-    users && users.length == 1
+    User.find_by(email: email, password: password)
   end
 end
