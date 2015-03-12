@@ -1,26 +1,46 @@
 class FacebookController < ApplicationController
 
   def create
+
+    email = params[:email]
+    first_name = params[:first_name] 
+    last_name = params[:last_name]
+    username = params[:username]
+    
     respond_to do |format|
       format.json do
-        user_id = params[:user_id]
 
-        if user_id
-          user = User.with_facebook_id(params[:facebook_id])
+        if email
+          user = User.find_by(email: email)
           if user
-            # A user exists with that user_id. Let's link their account to their Facebook account!
+            # A user exists with that email. Let's link their account to their Facebook account!
             create_or_update_facebook_identity(user)
-            render json: { success: true, user: user, api_key: user.api_key, facebook_identity: user.facebook_identity }
+            render json: {
+                     success: true,
+                     status: :user_exists,
+                     user: user,
+                     api_key: user.api_key,
+                     facebook_identity: user.facebook_identity }
           else
-            # No user exists with that user_id.
             # Create a new account from the Facebook params
-            # User.create(email: '', name: '', first_name: '', last_name: '', name: '', username: '', password: '')
-            # as long as the Facebook account is not linked to an extant account
-            # u = User.makeFromFacebookParams(params)
-            render json: { success: true, message: 'user created from facebook' }
+            user = User.create(email: email, password: SecureRandom.hex(12)) do |u|
+              u.name = "#{first_name} #{last_name}" if first_name && last_name
+              u.first_name = first_name
+              u.last_name = last_name
+              u.username = username
+            end
+            create_or_update_facebook_identity(user)
+            render json: {
+                     success: true,
+                     status: :user_created,
+                     message: 'user created from facebook',
+                     user: user,
+                     api_key: user.api_key,
+                     facebook_identity: user.facebook_identity
+                   }
           end
         else
-          render json: { success: false, message: 'must supply user_id' }
+          render json: { success: false, message: 'must supply email' }
         end
       end
     end
@@ -36,7 +56,8 @@ class FacebookController < ApplicationController
     i.name = params[:name]
     i.username = params[:username]
     i.location = params[:location]
-    i.link = params[:facebook_id]
+    i.link = params[:link]
+    i.facebook_id = params[:facebook_id]
     user.facebook_identity = i
     user.save
   end
