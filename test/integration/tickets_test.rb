@@ -5,7 +5,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
   def setup
     @event = Fabricate(:event)
-    @user = User.create(name: 'kmc3', unix: 'kmc3', password: 'foobar')
+    @user = User.create(username: 'kmc3', email: 'kmc3@williams.edu', password: 'foobar')
     login @user
   end
 
