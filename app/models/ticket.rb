@@ -13,5 +13,9 @@ class Ticket < ActiveRecord::Base
     super
     self.status = self.ticket_status.name
   end
+
+  def as_json(options={})
+    super(include: :ticket_status)
+  end
   
 end
