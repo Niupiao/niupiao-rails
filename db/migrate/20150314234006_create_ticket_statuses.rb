@@ -3,6 +3,7 @@ class CreateTicketStatuses < ActiveRecord::Migration
     create_table :ticket_statuses do |t|
       t.string :name
       t.integer :max_purchasable
+      t.integer :price
       t.references :event, index: true
 
       t.timestamps null: false

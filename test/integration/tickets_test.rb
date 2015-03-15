@@ -14,8 +14,8 @@ class TicketsTest < ActionDispatch::IntegrationTest
                            total_tickets: 0,
                            tickets_sold: 0
                            )
-    @general = TicketStatus.create!(name: "General", max_purchasable: 3)
-    @vip = TicketStatus.create!(name: "VIP", max_purchasable: 2)
+    @general = TicketStatus.create!(name: "General", max_purchasable: 3, price: 50)
+    @vip = TicketStatus.create!(name: "VIP", max_purchasable: 2, price: 150)
     @event.ticket_statuses << @general
     @event.ticket_statuses << @vip
     @event.save!
@@ -29,7 +29,6 @@ class TicketsTest < ActionDispatch::IntegrationTest
       post "/events/#{@event.id}/tickets", ticket: {
         event_id: @event.id,
         user_id: @user.id,
-        price: 100,
         ticket_status_id: @general.id
       }
     end

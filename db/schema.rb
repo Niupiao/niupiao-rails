@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 20150315213208) do
   create_table "ticket_statuses", force: :cascade do |t|
     t.string   "name"
     t.integer  "max_purchasable"
+    t.integer  "price"
     t.integer  "event_id"
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
@@ -66,7 +67,6 @@ ActiveRecord::Schema.define(version: 20150315213208) do
     t.integer  "event_id"
     t.integer  "user_id"
     t.string   "status"
-    t.integer  "price"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.integer  "ticket_status_id"

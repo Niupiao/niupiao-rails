@@ -1,5 +1,5 @@
 <% buyer = ticket.user %>
-<%= ticket.status.upcase %> seating for $<%= ticket.price %>
+<%= ticket.status.upcase %> seating for $<%= ticket.ticket_status.price %>
 <% if buyer %>
   <%= "(bought by #{buyer.name})" %>  
 <% else %>
