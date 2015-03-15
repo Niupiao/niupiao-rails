@@ -3,6 +3,6 @@ class TicketStatus < ActiveRecord::Base
   has_many :tickets
 
   validates :name, presence: true
-  validates :max_purchaseable, presence: true
+  validates :max_purchasable, presence: true
   
 end

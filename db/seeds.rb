@@ -12,8 +12,8 @@
                 link: Faker::Internet.url,
                 total_tickets: 0,
                 tickets_sold: 0)
-  e.ticket_statuses << TicketStatus.create!(name: "General", max_purchaseable: 3)
-  e.ticket_statuses << TicketStatus.create!(name: "VIP", max_purchaseable: 2)
+  e.ticket_statuses << TicketStatus.create!(name: "General", max_purchasable: 3)
+  e.ticket_statuses << TicketStatus.create!(name: "VIP", max_purchasable: 2)
   e.save!
 end
                 
