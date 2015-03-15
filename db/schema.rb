@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(version: 20150314234006) do
     t.integer  "event_id"
     t.integer  "user_id"
     t.integer  "ticket_status_id"
+    t.string   "status"
     t.integer  "price"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false

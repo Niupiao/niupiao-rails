@@ -6,6 +6,11 @@ class ApplicationController < ActionController::Base
 
   include ApplicationHelper
 
+  def render_json(json)
+    puts JSON.pretty_generate(json)
+    render json: json
+  end
+  
   def json_request?
     request.format.json?
   end

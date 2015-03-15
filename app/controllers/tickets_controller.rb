@@ -38,7 +38,7 @@ class TicketsController < ApplicationController
   def my_tickets
     respond_to do |format|
       format.json do
-        render json: @current_user.my_tickets
+        render_json(@current_user.my_tickets)
       end
     end
   end

@@ -7,5 +7,11 @@ class Ticket < ActiveRecord::Base
 
   validates :price, presence: true
   validates :event, presence: true
+  validates :ticket_status, presence: true
+
+  def initialize(attributes = {})
+    super
+    self.status = self.ticket_status.name
+  end
   
 end
