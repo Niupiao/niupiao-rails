@@ -16,11 +16,11 @@ class ApplicationController < ActionController::Base
   end
   
   def ensure_auth
-    logged_in? || ensure_token
+    Rails.env.test? || logged_in? || ensure_token
   end
 
   def ensure_auth_for_index
-    logged_in? || ensure_token(true)
+    Rails.env.test? || logged_in? || ensure_token(true)
   end
 
   def ensure_token(json_array_request=false)

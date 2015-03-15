@@ -24,6 +24,7 @@ class TicketsController < ApplicationController
     @tickets = @event.tickets
 
     respond_to do |format|
+      format.html { render plain: @tickets.as_json.inspect }
       format.json do
         render json: @tickets
       end
@@ -51,7 +52,7 @@ class TicketsController < ApplicationController
   end
   
   def ticket_params
-    params.require(:ticket).permit(:user_id, :event_id, :price, :status)
+    params.require(:ticket).permit(:user_id, :event_id, :price, :ticket_status_id)
   end
   
   

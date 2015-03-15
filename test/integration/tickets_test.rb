@@ -33,6 +33,9 @@ class TicketsTest < ActionDispatch::IntegrationTest
         ticket_status_id: @general.id
       }
     end
+
+    get "/events/#{@event.id}/tickets.json"
+    puts "JSON: #{prettify(json)}"
   end
 
 end
