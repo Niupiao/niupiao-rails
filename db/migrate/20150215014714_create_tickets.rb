@@ -4,7 +4,6 @@ class CreateTickets < ActiveRecord::Migration
       t.references :event, index: true
       t.references :user, index: true
       t.string :status
-      t.integer :price
 
       t.timestamps null: false
     end

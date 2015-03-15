@@ -5,7 +5,6 @@ class Ticket < ActiveRecord::Base
   belongs_to :user
   belongs_to :ticket_status
 
-  validates :price, presence: true
   validates :event, presence: true
   validates :ticket_status, presence: true
 

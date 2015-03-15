@@ -12,8 +12,8 @@
                 link: Faker::Internet.url,
                 total_tickets: 0,
                 tickets_sold: 0)
-  e.ticket_statuses << TicketStatus.create!(name: "General", max_purchasable: 3)
-  e.ticket_statuses << TicketStatus.create!(name: "VIP", max_purchasable: 2)
+  e.ticket_statuses << TicketStatus.create!(name: "General", max_purchasable: 3, price: 50)
+  e.ticket_statuses << TicketStatus.create!(name: "VIP",     max_purchasable: 2, price: 150)
   e.save!
 end
                 
@@ -24,8 +24,8 @@ user2 = User.create(username: 'rhk1', email: 'rhk1@williams.edu', password: 'foo
 Event.all.each do |event|
   User.all.each do |user|
     event.ticket_statuses.each do |ticket_status|
-      event.tickets << Ticket.create!(event: event, price: [50, 100, 150].sample, ticket_status: ticket_status, user: user)
-      event.tickets << Ticket.create!(event: event, price: [50, 100, 150].sample, ticket_status: ticket_status)
+      event.tickets << Ticket.create!(event: event, ticket_status: ticket_status, user: user)
+      event.tickets << Ticket.create!(event: event, ticket_status: ticket_status)
       event.save!
     end
   end
