@@ -54,10 +54,10 @@ ActiveRecord::Schema.define(version: 20150314234006) do
 
   create_table "ticket_statuses", force: :cascade do |t|
     t.string   "name"
-    t.integer  "max_purchaseable"
+    t.integer  "max_purchasable"
     t.integer  "event_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   add_index "ticket_statuses", ["event_id"], name: "index_ticket_statuses_on_event_id"
