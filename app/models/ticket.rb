@@ -3,16 +3,9 @@ class Ticket < ActiveRecord::Base
 
   belongs_to :event
   belongs_to :user
+  belongs_to :ticket_status
 
-  STATUS_VIP = "vip"
-  STATUS_GENERAL = "general"
-
-  def vip_status?
-    self.status == STATUS_VIP
-  end
-
-  def general_status?
-    self.status == STATUS_GENERAL
-  end
+  validates :price, presence: true
+  validates :event, presence: true
   
 end
