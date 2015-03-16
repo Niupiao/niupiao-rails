@@ -20,21 +20,35 @@ class TicketsTest < ActionDispatch::IntegrationTest
     @event.ticket_statuses << @vip
     @event.save!
 
-    @user = User.create(username: 'kmc3', email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
-    login @user
+    @user1 = User.create(username: 'kmc3', email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
+    @user2 = User.create(username: 'rhk1', email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon',  first_name: 'Ryan',  last_name: 'Kwon')
+    login @user1
   end
 
   test "should create ticket" do
+
+    # Create a ticket that we User1 owns
     assert_difference('Ticket.count') do
       post "/events/#{@event.id}/tickets", ticket: {
         event_id: @event.id,
-        user_id: @user.id,
+        user_id: @user1.id,
         ticket_status_id: @general.id
       }
     end
 
-    get "/events/#{@event.id}/tickets.json"
-    puts "JSON: #{prettify(json)}"
+    # Create a ticket that NO ONE owns
+    assert_difference('Ticket.count') do
+      post "/events/#{@event.id}/tickets", ticket: {
+        event_id: @event.id,
+        ticket_status_id: @general.id
+      }
+    end
+
+    # Get my tickets
+    puts JSON.pretty_generate((@user1.my_tickets))
+    
+    #get "/events/#{@event.id}/tickets.json"
+    #puts "JSON: #{prettify(json)}"
   end
 
 end
