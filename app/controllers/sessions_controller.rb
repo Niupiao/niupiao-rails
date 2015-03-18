@@ -18,10 +18,10 @@ class SessionsController < ApplicationController
         user = authenticate(email, password)
         if user
           login(user)
-          flash[:notice] = "Welcome, #{user.username}!"
+          flash[:notice] = "Welcome, #{user.first_name}!"
           redirect_to :events
         else
-          flash[:notice] = 'Invalid username/password'
+          flash[:notice] = 'Invalid login credentials'
           render 'sessions/login'
         end        
       end
@@ -112,7 +112,7 @@ class SessionsController < ApplicationController
           render json: {
                    success: false,
                    message: "User with email \"#{email}\" taken.",
-                   status: :username_taken
+                   status: :email_taken
                  }
         end
       end
@@ -120,7 +120,7 @@ class SessionsController < ApplicationController
       format.html do
         if User.where(email: email).empty?
           # TODO check for missing fields
-          user = User.create(username: username,
+          user = User.create(
                              email: email,
                              password: password,
                              first_name: first_name,
