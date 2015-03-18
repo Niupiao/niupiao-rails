@@ -18,8 +18,8 @@
 end
                 
                 
-user1 = User.create(username: 'kmc3', email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
-user2 = User.create(username: 'rhk1', email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon', first_name: 'Ryan', last_name: 'Kwon')
+user1 = User.create(email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
+user2 = User.create(email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon', first_name: 'Ryan', last_name: 'Kwon')
 
 Event.all.each do |event|
   User.all.each do |user|
