@@ -92,13 +92,28 @@ class SessionsController < ApplicationController
         if User.where(email: email).empty?
           user = User.create(email: email, password: password, first_name: first_name, last_name: last_name)
           if user.save
-            api_key = user.api_key
-            render json: { success: true, user: user, api_key: api_key }
+            # USER SAVED!
+            render json: {
+                     success: true,
+                     user: user,
+                     api_key: user.api_key
+                   }
           else
-            render json: { success: false, message: 'could not save user after creating', status: :creation_fail }
+            # USER DID NOT SAVE!
+            render json: {
+                     success: false,
+                     message: 'Could not save user after creating',
+                     status: :creation_fail,
+                     messages: user.errors.as_json(full_messages: true)
+                   }
           end
         else
-          render json: { success: false, message: 'username taken', status: :username_taken }
+          # USER EXISTS!
+          render json: {
+                   success: false,
+                   message: "User with email \"#{email}\" taken.",
+                   status: :username_taken
+                 }
         end
       end
       

@@ -12,7 +12,6 @@ class TicketsController < ApplicationController
   end
 
   def create
-    puts "TICKET PARAMS: #{ticket_params}"
     @ticket = Ticket.create!(ticket_params)
     respond_to do |format|
       format.html { render :create } 

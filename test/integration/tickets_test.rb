@@ -45,7 +45,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
     end
 
     # Get my tickets
-    puts JSON.pretty_generate((@user1.my_tickets))
+    #puts JSON.pretty_generate((@user1.my_tickets))
     
     #get "/events/#{@event.id}/tickets.json"
     #puts "JSON: #{prettify(json)}"
