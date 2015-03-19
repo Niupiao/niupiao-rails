@@ -5,6 +5,13 @@ class TicketsController < ApplicationController
 
   before_action :get_event, only: [:new, :create, :index]
 
+  def buy
+    puts "PAARAMS: #{params.inspect}"
+    # TODO finish method
+    # TODO ensure auth
+    render json: params
+  end
+  
   def new
     @event = Event.find(params[:event_id])
     @ticket = Ticket.new

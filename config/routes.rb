@@ -11,9 +11,11 @@ Rails.application.routes.draw do
   post 'signup', to: 'sessions#signup'
 
   get 'me/tickets', to: 'tickets#my_tickets'
-  
+
+  post '/events/:event_id/tickets/:ticket_id/buy', to: 'tickets#buy'
   resources :events do
     resources :tickets, shallow: true
   end
+  
 
 end

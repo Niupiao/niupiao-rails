@@ -26,7 +26,18 @@ class TicketsTest < ActionDispatch::IntegrationTest
     login @user1
   end
 
-  test "should create ticket" do
+  test "should buy ticket" do
+
+    # Create a ticket that NO ONE owns
+    ticket = Ticket.create!(event: @event, ticket_status: @general)
+
+    # Buy the ticket
+    request.headers['Authorization'] = "Token token=\"#{@user1.api_key.access_token}\""
+    post "/events/#{@event.id}/tickets/#{ticket.id}/buy"
+    
+  end
+  
+  test "MyTickets should only show tickets you own" do
 
     # Create a ticket that we User1 owns
     assert_difference('Ticket.count') do
