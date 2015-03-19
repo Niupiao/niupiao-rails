@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'integration/integration_helper_test'
 
 class TicketsTest < ActionDispatch::IntegrationTest
   include IntegrationHelperTest
