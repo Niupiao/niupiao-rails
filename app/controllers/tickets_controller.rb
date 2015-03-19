@@ -6,10 +6,19 @@ class TicketsController < ApplicationController
   before_action :get_event, only: [:new, :create, :index]
 
   def buy
-    puts "PAARAMS: #{params.inspect}"
-    # TODO finish method
-    # TODO ensure auth
-    render json: params
+    ticket = Ticket.find(params[:ticket_id])
+    event = Event.find(params[:event_id])
+
+    # TODO @current_user is not being set by passed token
+    ticket.user = @current_user
+    ticket.save
+
+    respond_to do |format|
+      format.html
+      format.json do
+        render json: { ticket: ticket, event: event }
+      end
+    end
   end
   
   def new

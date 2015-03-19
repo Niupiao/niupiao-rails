@@ -33,7 +33,9 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
     # Buy the ticket
     request.headers['Authorization'] = "Token token=\"#{@user1.api_key.access_token}\""
-    post "/events/#{@event.id}/tickets/#{ticket.id}/buy"
+    post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"
+    assert_equal @user1.id, json['ticket']['user_id']
+    puts prettify(json)
     
   end
   

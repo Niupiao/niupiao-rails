@@ -15,24 +15,17 @@ class EventCreationTest < ActionDispatch::IntegrationTest
     # Create an event
     assert_difference('Event.count') do
       post '/events.json', event: {
-             name: 'John Mayer',
-             date: now,
-             organizer: 'Brent Heeringa',
-             location: 'Williamstown, MA',
-             description: 'A concert',
-#             image: '',
-             link: 'some link',
-             total_tickets: 14,
-             ticket_statuses_attributes: [
-               {
-                 name: 'General',
-                 max_purchasable: 3,
-                 price: 50
-               }
-             ]
-           }
+        name: 'John Mayer',
+        date: now,
+        ticket_statuses_attributes: [{name: 'General', max_purchasable: 3, price: 50}],
+        organizer: 'Brent Heeringa',
+        location: 'Williamstown, MA',
+        description: 'A concert',
+        link: 'some link',
+        total_tickets: 14
+      }
     end
-
+    
     puts prettify(json)
 
     assert_equal 1, Event.count

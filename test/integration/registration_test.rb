@@ -3,7 +3,6 @@ require 'test_helper'
 class RegistrationTest < ActionDispatch::IntegrationTest
   include IntegrationHelperTest
 
-
   test "should register a user" do
     post '/signup.json', session: {
            email: 'kmc3@williams.edu',
