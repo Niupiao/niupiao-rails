@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Niupiao/niupiao-rails.svg?branch=master)](https://travis-ci.org/Niupiao/niupiao-rails)
+
 # Setup
 Run `bundle install` if you haven't already done so.
 Then run `rake db:drop db:create db:migrate db:seed` to create and seed a fresh database.
