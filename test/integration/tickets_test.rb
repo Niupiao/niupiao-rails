@@ -34,8 +34,6 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
     # Buy the ticket
     assert_not_nil @user1.api_key.access_token
-    headers = { 'Authorization' => "Token token=\"#{@user1.api_key.access_token}\"" }
-    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.api_key.access_token)
     post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"#, nil, headers
     puts prettify(json)
     assert_equal @user1.id, json['ticket']['user_id']
@@ -62,10 +60,9 @@ class TicketsTest < ActionDispatch::IntegrationTest
     end
 
     # Get my tickets
-    #puts JSON.pretty_generate((@user1.my_tickets))
+    get_with_token '/me/tickets.json', @user1.api_key.access_token
+    assert_equal JSON.pretty_generate(@user1.my_tickets), prettify(json)
     
-    #get "/events/#{@event.id}/tickets.json"
-    #puts "JSON: #{prettify(json)}"
   end
 
 end

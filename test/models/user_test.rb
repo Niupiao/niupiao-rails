@@ -7,6 +7,13 @@ class UserTest < ActiveSupport::TestCase
     @password = 'foobar'
   end
 
+  test "should create access token" do
+    user = User.create(email: @email, password: @password)
+    assert user.valid?
+    assert user.api_key
+    assert user.api_key.access_token
+  end
+
   test "should have email and password" do
     assert_not User.create(email: @email).valid?
     assert_not User.create(password: @password).valid?
