@@ -1,5 +1,8 @@
 language: ruby
 rvm:
   - "2.1.2"
-# uncomment this line if your project needs to run something other than `rake`:
-# script: bundle exec rspec spec
+script: 
+  - RAILS_ENV=test bundle exec rake --trace db:migrate test
+before_script:
+  - mysql -e 'create database niupiao-rails'
+  - psql -c 'create database niupiao-rails' -U postgres
