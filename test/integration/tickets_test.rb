@@ -7,6 +7,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
   def setup
     @event = Event.create!(
                            name: 'TestEvent',
+                           date: DateTime.now,
                            organizer: 'TestOrganizer',
                            location: 'Williamstown, MA',
                            description: 'TestDescription',
