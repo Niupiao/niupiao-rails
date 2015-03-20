@@ -1,0 +1,8 @@
+language: ruby
+rvm:
+  - "2.1.2"
+script: 
+  - RAILS_ENV=test bundle exec rake db:migrate test:models
+before_script:
+  - mysql -e 'create database niupiao_rails_test'
+  - psql -c 'create database niupiao_rails_test' -U postgres

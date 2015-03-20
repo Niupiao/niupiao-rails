@@ -9,7 +9,16 @@ class EventsController < ApplicationController
 
   def create
     @event = Event.create(event_params)
-    render :index
+    respond_to do |format|
+      format.html { render :index }
+      format.json do
+        if @event.valid?
+          render json: @event
+        else
+          render json: @event.errors.as_json(full_messages: true)
+        end
+      end
+    end
   end
 
   def destroy
@@ -47,6 +56,7 @@ class EventsController < ApplicationController
                                   :location,
                                   :description,
                                   :image,
+                                  :ticket_statuses_attributes => [:event_id, :name, :max_purchasable, :price],
                                   :link,
                                   :total_tickets
                                   )

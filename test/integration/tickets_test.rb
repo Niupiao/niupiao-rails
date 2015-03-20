@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'integration/integration_helper_test'
 
 class TicketsTest < ActionDispatch::IntegrationTest
   include IntegrationHelperTest
@@ -6,6 +7,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
   def setup
     @event = Event.create!(
                            name: 'TestEvent',
+                           date: DateTime.now,
                            organizer: 'TestOrganizer',
                            location: 'Williamstown, MA',
                            description: 'TestDescription',
@@ -25,7 +27,20 @@ class TicketsTest < ActionDispatch::IntegrationTest
     login @user1
   end
 
-  test "should create ticket" do
+  test "should buy ticket" do
+
+    # Create a ticket that NO ONE owns
+    ticket = Ticket.create!(event: @event, ticket_status: @general)
+
+    # Buy the ticket
+    assert_not_nil @user1.api_key.access_token
+    post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"#, nil, headers
+    puts prettify(json)
+    assert_equal @user1.id, json['ticket']['user_id']
+    
+  end
+  
+  test "MyTickets should only show tickets you own" do
 
     # Create a ticket that we User1 owns
     assert_difference('Ticket.count') do
@@ -45,10 +60,9 @@ class TicketsTest < ActionDispatch::IntegrationTest
     end
 
     # Get my tickets
-    #puts JSON.pretty_generate((@user1.my_tickets))
+    get_with_token '/me/tickets.json', @user1.api_key.access_token
+    assert_equal JSON.pretty_generate(@user1.my_tickets), prettify(json)
     
-    #get "/events/#{@event.id}/tickets.json"
-    #puts "JSON: #{prettify(json)}"
   end
 
 end

@@ -30,7 +30,12 @@ class SessionsController < ApplicationController
       format.json do
         user = User.find_by(email: email)
         unless user
-          render json: { success: false, message: "No user exists with the email: #{email}", status: :invalid_user_name }
+          render json: { 
+            success: false, 
+            message: "No user exists with the email: #{email}", 
+            status: :invalid_user_name,
+            full_messages: user.errors.as_json(full_messages: true)
+          }
           return
         end
 
@@ -40,7 +45,12 @@ class SessionsController < ApplicationController
             
             if !user.api_key.expired?
               # user's api key is still good -- no need to make a new one
-              render json: { success: true, message: 'user already has api key', api_key: user.api_key, user: user }
+              render json: { 
+                success: true, 
+                message: 'user already has api key', 
+                api_key: user.api_key, 
+                user: user 
+              }
               return
               
             else
@@ -52,15 +62,27 @@ class SessionsController < ApplicationController
           # make a new api key
           api_key = ApiKey.new(user: user)
           if api_key.save && user.save
-            render json: { success: true, message: 'created api key', api_key: api_key, user: user }
+            render json: { 
+              success: true, 
+              message: 'created api key', 
+              api_key: api_key, 
+              user: user 
+            }
             return
           else
-            render json: { success: false, message: 'could not save api key' }
+            render json: { 
+              success: false, 
+              message: 'could not save api key' 
+            }
             return
           end
           
         else
-          render json: { success: false, message: 'Invalid password', status: :invalid_password }
+          render json: { 
+            success: false, 
+            message: 'Invalid password', 
+            status: :invalid_password 
+          }
           return
         end
         
@@ -89,7 +111,7 @@ class SessionsController < ApplicationController
     respond_to do |format|
 
       format.json do
-        if User.where(email: email).empty?
+        
           user = User.create(email: email, password: password, first_name: first_name, last_name: last_name)
           if user.save
             # USER SAVED!
@@ -104,17 +126,10 @@ class SessionsController < ApplicationController
                      success: false,
                      message: 'Could not save user after creating',
                      status: :creation_fail,
-                     messages: user.errors.as_json(full_messages: true)
+                     full_messages: user.errors.as_json(full_messages: true),
+                     messages: user.errors.as_json
                    }
           end
-        else
-          # USER EXISTS!
-          render json: {
-                   success: false,
-                   message: "User with email \"#{email}\" taken.",
-                   status: :email_taken
-                 }
-        end
       end
       
       format.html do

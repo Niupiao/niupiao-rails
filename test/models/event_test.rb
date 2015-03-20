@@ -1,7 +1,8 @@
 require 'test_helper'
 
 class EventTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test "should have name and date" do
+    assert_not Event.create(organizer: 'Brent Heeringa').valid?
+    assert Event.create(name: 'John Mayer', date: DateTime.now).valid?
+  end
 end
