@@ -23,10 +23,17 @@ class ApplicationController < ActionController::Base
     Rails.env.test? || logged_in? || ensure_token(true)
   end
 
+  def token_authenticated
+    authenticate_with_http_token do |token, options| 
+      @current_user = User.with_access_token(token)
+      @token = token
+    end
+  end
+
   def ensure_token(json_array_request=false)
     case request.format
     when Mime::JSON
-      unless authenticate_with_http_token { |token, options| @current_user = User.with_access_token(token) }
+      unless token_authenticated
         if json_array_request
           render json: [{ error: :invalid_token }].to_json
         else

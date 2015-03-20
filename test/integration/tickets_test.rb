@@ -32,10 +32,12 @@ class TicketsTest < ActionDispatch::IntegrationTest
     ticket = Ticket.create!(event: @event, ticket_status: @general)
 
     # Buy the ticket
-    request.headers['Authorization'] = "Token token=\"#{@user1.api_key.access_token}\""
-    post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"
-    assert_equal @user1.id, json['ticket']['user_id']
+    assert_not_nil @user1.api_key.access_token
+    headers = { 'Authorization' => "Token token=\"#{@user1.api_key.access_token}\"" }
+    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(@user1.api_key.access_token)
+    post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"#, nil, headers
     puts prettify(json)
+    assert_equal @user1.id, json['ticket']['user_id']
     
   end
   

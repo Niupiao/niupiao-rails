@@ -16,7 +16,7 @@ class TicketsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render json: { ticket: ticket, event: event }
+        render json: { token: @token, user: @current_user, ticket: ticket}#, event: event }
       end
     end
   end
