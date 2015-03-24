@@ -32,7 +32,7 @@ class EventCreationTest < ActionDispatch::IntegrationTest
     event = Event.all.first
     assert_equal 'John Mayer', event.name
     assert_equal 14, event.total_tickets
-    assert_equal 1, event.ticket_statuses.count
+    assert_equal 1, event.ticket_statuses.count, "Should have created 1 ticket status for this event"
   end
     
   
