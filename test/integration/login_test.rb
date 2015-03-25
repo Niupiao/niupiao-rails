@@ -13,4 +13,17 @@ class LoginTest < ActionDispatch::IntegrationTest
     assert_equal @user1.api_key.access_token, json['api_key']['access_token']
   end
 
+  test "should login with valid email" do
+    junkEmail = 'junkEmail'
+    post '/login.json', { email: junkEmail, password: 'foobar' }
+    assert_equal false, json['success']
+    assert_equal 'invalid_email', json['status']
+  end
+
+  test "should login with valid password" do
+    post '/login.json', { email: @user1.email, password: 'junkPassword' }
+    assert_equal false, json['success']
+    assert_equal 'invalid_password', json['status']
+  end
+
 end

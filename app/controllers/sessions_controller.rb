@@ -33,8 +33,7 @@ class SessionsController < ApplicationController
           render json: { 
             success: false, 
             message: "No user exists with the email: #{email}", 
-            status: :invalid_user_name,
-            full_messages: user.errors.as_json(full_messages: true)
+            status: :invalid_email
           }
           return
         end
