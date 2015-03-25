@@ -57,7 +57,8 @@ class EventsController < ApplicationController
                                   :description,
                                   :image,
                                   :link,
-                                  :total_tickets
+                                  :total_tickets,
+                                  ticket_statuses_attributes: [:name, :max_purchasable, :price]
                                   )
   end
 
