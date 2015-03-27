@@ -1,8 +1,12 @@
-
-%w(bold.jpg exo.jpg jay-chou.jpg jiang-hui.png leehom-wang.jpg snsd.jpg x-tuts.jpg).each do |event_name|
-  name = event_name.upcase.gsub('-', ' ')
-  dot = event_name.index '.'
-  name = name[0...dot]
+[
+ ['BOLD', 'bold.jpg'], 
+ ['EXO', 'exo.jpg'],
+ ['Jay Chou in Concert', 'jay-chou.jpg'],
+ ['Jiang-Hui', 'jiang-hui.png'],
+ ['Leehom Wang', 'leehom-wang.jpg'],
+ ['SNSD', 'snsd.jpg'],
+ ['X-Tuts', 'x-tuts.jpg']
+].each do |name, event_name|
   e = Event.create!(name: "#{name}", 
                 organizer: "Brent Heeringa", 
                 date: (DateTime.now + (60..90).to_a.sample.day),

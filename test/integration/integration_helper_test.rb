@@ -1,11 +1,5 @@
 module IntegrationHelperTest
 
-  def get_with_token(url, token)
-    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(token)
-    headers = { 'Authorization' => "Token token=\"#{token}\"" }
-    get url, nil, headers
-  end
-
   def json
     @json = JSON.parse(response.body)
   end

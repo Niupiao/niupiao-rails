@@ -60,7 +60,11 @@ class TicketsTest < ActionDispatch::IntegrationTest
     end
 
     # Get my tickets
-    get_with_token '/me/tickets.json', @user1.api_key.access_token
+    #    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(token)
+    token = @user1.api_key.access_token
+    headers = { 'Authorization' => "Token token=\"#{token}\"" }
+    get '/me/tickets.json', {}, headers
+    
     assert_equal JSON.pretty_generate(@user1.my_tickets), prettify(json)
     
   end
