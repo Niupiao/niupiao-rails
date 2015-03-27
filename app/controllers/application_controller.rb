@@ -22,7 +22,6 @@ class ApplicationController < ActionController::Base
     authenticate_with_http_token do |token, options| 
       @current_user = User.with_access_token(token)
       @token = token
-      render json: { user: @current_user, token: token }
     end
   end
 
