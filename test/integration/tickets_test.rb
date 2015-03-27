@@ -24,7 +24,6 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
     @user1 = User.create(email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
     @user2 = User.create(email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon',  first_name: 'Ryan',  last_name: 'Kwon')
-    login @user1
   end
 
   test "should buy ticket" do
@@ -34,8 +33,11 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
     # Buy the ticket
     assert_not_nil @user1.api_key.access_token
-    post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"#, nil, headers
+    post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"
     puts prettify(json)
+    assert_not_nil json['ticket'], "JSON response should have a value for 'ticket' key..."
+    assert_not_nil json['user'], "JSON response should have a value for 'user' key..."
+    assert_not_nil json['event'], "JSON response should have a value for 'event' key..."
     assert_equal @user1.id, json['ticket']['user_id']
     
   end
@@ -60,11 +62,11 @@ class TicketsTest < ActionDispatch::IntegrationTest
     end
 
     # Get my tickets
-    #    request.env['HTTP_AUTHORIZATION'] = ActionController::HttpAuthentication::Token.encode_credentials(token)
     token = @user1.api_key.access_token
-    headers = { 'Authorization' => "Token token=\"#{token}\"" }
-    get '/me/tickets.json', {}, headers
-    
+    assert_not_nil token, "Token is nil, wtf"
+    @request.headers['Authorization'] = "Token token=\"#{token}\""
+    get '/me/tickets.json'
+    puts prettify(json)
     assert_equal JSON.pretty_generate(@user1.my_tickets), prettify(json)
     
   end

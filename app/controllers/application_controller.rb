@@ -5,11 +5,6 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, if: :json_request?
 
   include ApplicationHelper
-
-  def render_json(json)
-    puts JSON.pretty_generate(json)
-    render json: json
-  end
   
   def json_request?
     request.format.json?
@@ -27,6 +22,7 @@ class ApplicationController < ActionController::Base
     authenticate_with_http_token do |token, options| 
       @current_user = User.with_access_token(token)
       @token = token
+      render json: { user: @current_user, token: token }
     end
   end
 
@@ -35,9 +31,15 @@ class ApplicationController < ActionController::Base
     when Mime::JSON
       unless token_authenticated
         if json_array_request
-          render json: [{ error: :invalid_token }].to_json
+          render json: [
+                        { 
+                          error: :invalid_token 
+                        }
+                       ].to_json
         else
-          render json: { error: :invalid_token }.to_json
+          render json: { 
+            error: :invalid_token 
+          }.to_json
         end
       end
     end

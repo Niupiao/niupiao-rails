@@ -16,7 +16,12 @@ class TicketsController < ApplicationController
     respond_to do |format|
       format.html
       format.json do
-        render json: { token: @token, user: @current_user, ticket: ticket}#, event: event }
+        render json: { 
+          token: @token, 
+          user: @current_user, 
+          ticket: ticket,
+          event: event
+        }
       end
     end
   end
@@ -54,7 +59,15 @@ class TicketsController < ApplicationController
   def my_tickets
     respond_to do |format|
       format.json do
-        render_json(@current_user.my_tickets)
+        tickets = @current_user.my_tickets
+        if tickets
+          render json: tickets
+        else
+          render json: {
+            success: false,
+            status: :nil_current_user
+          }
+        end
       end
     end
   end
