@@ -63,9 +63,11 @@ class TicketsTest < ActionDispatch::IntegrationTest
     # Get my tickets
     token = @user1.api_key.access_token
     auth_header = "Token token=\"#{token}\""
-    @request.headers['Authorization'] = auth_header
-    get '/me/tickets.json'
-    assert_equal auth_header, json['headers']
+    get '/me/tickets.json', nil, authorization: auth_header
+    puts prettify(json)
+    assert_includes request.headers["HTTP_AUTHORIZATION"], token
+    assert_equal request.headers["HTTP_AUTHORIZATION"], auth_header
+    assert_equal auth_header, json['token_header']
     
   end
 

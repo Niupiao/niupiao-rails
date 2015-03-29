@@ -66,7 +66,7 @@ class TicketsController < ApplicationController
           render json: {
             success: false,
             status: :nil_current_user,
-            headers: request.headers['Authorization']
+            token_header: request.headers['http_authorization'.upcase]
           }
         end
       end
