@@ -59,13 +59,14 @@ class TicketsController < ApplicationController
   def my_tickets
     respond_to do |format|
       format.json do
-        tickets = @current_user.my_tickets
+        tickets = @current_user.my_tickets if @current_user
         if tickets
           render json: tickets
         else
           render json: {
             success: false,
-            status: :nil_current_user
+            status: :nil_current_user,
+            headers: request.headers['Authorization']
           }
         end
       end
