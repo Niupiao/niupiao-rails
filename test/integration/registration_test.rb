@@ -10,7 +10,6 @@ class RegistrationTest < ActionDispatch::IntegrationTest
            first_name: 'kevin',
            last_name: 'chen'
          }
-    #puts "JSON: #{prettify(json)}"
     
     
     post '/signup.json', session: {
