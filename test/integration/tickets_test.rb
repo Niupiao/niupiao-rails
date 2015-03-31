@@ -31,9 +31,12 @@ class TicketsTest < ActionDispatch::IntegrationTest
     # Create a ticket that NO ONE owns
     ticket = Ticket.create!(event: @event, ticket_status: @general)
 
-    # Buy the ticket
-    assert_not_nil @user1.api_key.access_token
+    # Try to Buy the ticket without authorization
     post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json"
+    assert :invalid_token.to_s, json['error']
+
+    # Buy with authorization
+    auth_post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json", @user1.api_key.access_token
     assert_not_nil json['ticket'], "JSON response should have a value for 'ticket' key..."
     assert_not_nil json['user'], "JSON response should have a value for 'user' key..."
     assert_not_nil json['event'], "JSON response should have a value for 'event' key..."
@@ -62,12 +65,11 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
     # Get my tickets
     token = @user1.api_key.access_token
-    auth_header = "Token token=\"#{token}\""
-    get '/me/tickets.json', nil, authorization: auth_header
-    puts prettify(json)
-    assert_includes request.headers["HTTP_AUTHORIZATION"], token
-    assert_equal request.headers["HTTP_AUTHORIZATION"], auth_header
-    assert_equal auth_header, json['token_header']
+    auth_get '/me/tickets.json', token
+    assert_equal @user1.my_tickets, json
+
+    auth_get '/me/tickets.json', 'badToken'
+    assert_equal :invalid_token.to_s, json['error']
     
   end
 

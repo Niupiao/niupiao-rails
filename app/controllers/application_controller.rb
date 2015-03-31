@@ -6,28 +6,26 @@ class ApplicationController < ActionController::Base
   skip_before_action :verify_authenticity_token, if: :json_request?
 
   include ApplicationHelper
-
-  def get_token
-    @token = request.headers['HTTP_AUTHORIZATION'].split('"').second
-  end
   
   def json_request?
     request.format.json?
   end
   
   def ensure_auth
-    Rails.env.test? || logged_in? || ensure_token
+    logged_in? || ensure_token
   end
 
   def ensure_auth_for_index
-    Rails.env.test? || logged_in? || ensure_token(true)
+    logged_in? || ensure_token(true)
   end
 
+  # Expects a header HTTP_AUTHORIZATION (or just AUTHORIZATION if you're using curl)
+  # with the value "Token token=\"#{token}\""
   def token_authenticated
-    authenticate_with_http_token do |token, options| 
-      @current_user = User.with_access_token(token)
-      @token = token
-    end
+    token_header = request.headers['HTTP_AUTHORIZATION']
+    @token = token_header.split('"').second if token_header
+    @current_user = User.with_access_token(@token)
+    @current_user
   end
 
   def ensure_token(json_array_request=false)

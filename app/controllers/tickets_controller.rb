@@ -5,6 +5,15 @@ class TicketsController < ApplicationController
 
   before_action :get_event, only: [:new, :create, :index]
 
+  def my_tickets
+    respond_to do |format|
+      format.json do
+        tickets = @current_user.my_tickets
+        render json: tickets
+      end
+    end
+  end
+
   def buy
     ticket = Ticket.find(params[:ticket_id])
     event = Event.find(params[:event_id])
@@ -55,25 +64,8 @@ class TicketsController < ApplicationController
     @ticket = Ticket.find(params[:id])
     @event = Event.find(@ticket.event_id)
   end
-
-  def my_tickets
-    respond_to do |format|
-      format.json do
-        tickets = @current_user.my_tickets if @current_user
-        if tickets
-          render json: tickets
-        else
-          render json: {
-            success: false,
-            status: :nil_current_user,
-            token_header: request.headers['http_authorization'.upcase]
-          }
-        end
-      end
-    end
-  end
-
   
+
   private 
   
   def get_event
