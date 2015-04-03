@@ -18,9 +18,8 @@ class TicketsController < ApplicationController
     ticket = Ticket.find(params[:ticket_id])
     event = Event.find(params[:event_id])
 
-    # TODO @current_user is not being set by passed token
-    ticket.user = @current_user
-    ticket.save
+    ticket.update!(user_id: @current_user.id)
+    ticket.save!
 
     respond_to do |format|
       format.html

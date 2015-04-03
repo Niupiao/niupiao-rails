@@ -35,7 +35,6 @@ class EventCreationTest < ActionDispatch::IntegrationTest
       }
     end
     
-    puts prettify(json)
 
     assert_equal 1, Event.count
     event = Event.all.first
