@@ -42,7 +42,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
     assert_not_nil json['user'], "JSON response should have a value for 'user' key..."
     assert_not_nil json['event'], "JSON response should have a value for 'event' key..."
     assert_equal @user1.id, json['ticket']['user_id']
-    assert_equal @user1, ticket.user, "User does not own ticket..."
+    assert_equal @user1, ticket.reload.user, "User does not own ticket..."
 
     
   end
