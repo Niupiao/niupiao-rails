@@ -6,8 +6,14 @@ module IntegrationHelperTest
     get url, options, authorization: "Token token=\"#{token}\""
   end
 
-  def auth_post(url, token, options=nil)
-    post url, options, authorization: "Token token=\"#{token}\""
+  def auth_post(url, token, headers=nil, options=nil)
+    if headers
+      full_headers = headers.merge(authorization: "Token token=\"#{token}\"")
+      puts "HEADERS: #{full_headers}"
+      post url, options, full_headers
+    else
+      post url, options, authorization: "Token token=\"#{token}\""
+    end
   end
 
   ### JSON RESPONSE METHODS

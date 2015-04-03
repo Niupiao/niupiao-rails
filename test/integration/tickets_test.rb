@@ -26,6 +26,24 @@ class TicketsTest < ActionDispatch::IntegrationTest
     @user2 = User.create!(email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon',  first_name: 'Ryan',  last_name: 'Kwon')
   end
 
+  test "should purchase multiple tickets" do
+    t1 = Ticket.create!(event: @event, ticket_status: @general)
+    t2 = Ticket.create!(event: @event, ticket_status: @general)
+    t3 = Ticket.create!(event: @event, ticket_status: @general)
+
+    auth_post "/buy.json", @user1.api_key.access_token, {
+      event_id: @event.id,
+      ticket_ids: [t1.id, t2.id, t3.id]
+    }
+
+    assert @user1.owns?(t1)
+    assert @user1.owns?(t2)
+    assert @user1.owns?(t3)
+    assert_equal @user1, t1.reload.user, "User does not own ticket..."
+    assert_equal @user1, t2.reload.user, "User does not own ticket..."
+    assert_equal @user1, t2.reload.user, "User does not own ticket..."
+  end
+
   test "should buy ticket" do
 
     # Create a ticket that NO ONE owns

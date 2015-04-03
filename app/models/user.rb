@@ -11,6 +11,15 @@ class User < ActiveRecord::Base
 
   after_save :create_api_key
 
+  def buy(ticket)
+    ticket.update!(user_id: self.id)
+    ticket.save!
+  end
+
+  def owns?(ticket)
+    ticket.user == self
+  end
+
   def self.with_facebook_id(facebook_id)
     identities = FacebookIdentity.where(facebook_id: facebook_id)
     identity = identities ? identities.first : nil

@@ -14,10 +14,23 @@ class TicketsController < ApplicationController
     end
   end
 
+  def batch_buy
+    respond_to do |format|
+      format.json do
+        event = Event.find(params[:event_id])
+        ticket_ids = params[:ticket_ids]
+        ticket_ids.each do |ticket_id|
+          ticket = event.tickets.where(id: ticket_id)
+          @current_user.buy(ticket) if ticket
+        end
+      end
+    end
+  end
+
   def buy
     ticket = Ticket.find(params[:ticket_id])
     event = Event.find(params[:event_id])
-
+    
     ticket.update!(user_id: @current_user.id)
     ticket.save!
 
