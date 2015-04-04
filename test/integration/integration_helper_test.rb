@@ -6,8 +6,12 @@ module IntegrationHelperTest
     get url, options, authorization: "Token token=\"#{token}\""
   end
 
-  def auth_post(url, token, options=nil)
-    post url, options, authorization: "Token token=\"#{token}\""
+  def auth_post(url, token, params=nil, options=nil)
+    if params
+      post url, params, authorization: "Token token=\"#{token}\""
+    else
+      post url, options, authorization: "Token token=\"#{token}\""
+    end
   end
 
   ### JSON RESPONSE METHODS

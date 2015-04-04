@@ -1,7 +1,7 @@
 class TicketsController < ApplicationController
 
-  before_action :ensure_auth, except: :index
-  before_action :ensure_auth_for_index, only: :index
+  before_action :ensure_auth, except: [:index, :batch_buy]
+  before_action :ensure_auth_for_index, only: [:index, :batch_buy]
 
   before_action :get_event, only: [:new, :create, :index]
 
@@ -14,10 +14,34 @@ class TicketsController < ApplicationController
     end
   end
 
+  def batch_buy
+    respond_to do |format|
+      format.json do
+        event = Event.find(params[:event_id])
+        ticket_ids = params[:ticket_ids]
+
+        tickets = []
+
+        ticket_ids.each do |ticket_id|
+          ticket = event.tickets.find_by(id: ticket_id)
+          if ticket
+            ticket.update!(user_id: @current_user.id)
+            ticket.save!
+            tickets.push(ticket.as_json().merge(success: true))
+          else
+            tickets.push(event_id: params[:event_id], id: ticket_id, success: false)
+          end
+        end
+
+        render json: tickets
+      end
+    end
+  end
+
   def buy
     ticket = Ticket.find(params[:ticket_id])
     event = Event.find(params[:event_id])
-
+    
     ticket.update!(user_id: @current_user.id)
     ticket.save!
 

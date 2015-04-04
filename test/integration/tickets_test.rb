@@ -26,6 +26,31 @@ class TicketsTest < ActionDispatch::IntegrationTest
     @user2 = User.create!(email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon',  first_name: 'Ryan',  last_name: 'Kwon')
   end
 
+  test "should purchase multiple tickets" do
+    t1 = Ticket.create!(event: @event, ticket_status: @general)
+    t2 = Ticket.create!(event: @event, ticket_status: @general)
+    t3 = Ticket.create!(event: @event, ticket_status: @general)
+
+    assert_equal 1, Event.count
+    assert_equal 3, Event.find(1).tickets.count
+
+    auth_post "/buy.json", @user1.api_key.access_token, {
+      event_id: @event.id,
+      ticket_ids: [t1.id, t2.id, t3.id, 4]
+    }
+
+    puts prettify(json)
+    t1 = t1.reload
+    t2 = t2.reload
+    t3 = t3.reload
+    assert @user1.owns?(t1), "User does not own ticket..."
+    assert @user1.owns?(t2), "User does not own ticket..."
+    assert @user1.owns?(t3), "User does not own ticket..."
+    assert_equal @user1, t1.reload.user, "User does not own ticket..."
+    assert_equal @user1, t2.reload.user, "User does not own ticket..."
+    assert_equal @user1, t2.reload.user, "User does not own ticket..."
+  end
+
   test "should buy ticket" do
 
     # Create a ticket that NO ONE owns
@@ -37,7 +62,6 @@ class TicketsTest < ActionDispatch::IntegrationTest
 
     # Buy with authorization
     auth_post "/events/#{@event.id}/tickets/#{ticket.id}/buy.json", @user1.api_key.access_token
-    puts prettify(json)
     assert_not_nil json['ticket'], "JSON response should have a value for 'ticket' key..."
     assert_not_nil json['user'], "JSON response should have a value for 'user' key..."
     assert_not_nil json['event'], "JSON response should have a value for 'event' key..."
