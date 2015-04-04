@@ -11,11 +11,6 @@ class User < ActiveRecord::Base
 
   after_save :create_api_key
 
-  def buy(ticket)
-    ticket.update!(user_id: self.id)
-    ticket.save!
-  end
-
   def owns?(ticket)
     ticket.user == self
   end
