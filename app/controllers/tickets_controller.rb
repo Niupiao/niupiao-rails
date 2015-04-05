@@ -17,19 +17,84 @@ class TicketsController < ApplicationController
   def batch_buy
     respond_to do |format|
       format.json do
-        event = Event.find(params[:event_id])
-        ticket_ids = params[:ticket_ids]
 
+        event = Event.find_by(id: params[:event_id])
+
+        unless event
+          render(json: [{error: :event_not_found}]) and return
+        end
+
+        # The array of tickets to be rendered
         tickets = []
 
-        ticket_ids.each do |ticket_id|
-          ticket = event.tickets.find_by(id: ticket_id)
-          if ticket
-            ticket.update!(user_id: @current_user.id)
-            ticket.save!
-            tickets.push(ticket.as_json().merge(success: true))
-          else
-            tickets.push(event_id: params[:event_id], id: ticket_id, success: false)
+        # Method 1: batch buy with ticket IDs
+        ticket_ids = params[:ticket_ids]
+        # Method 2: batch buy with statuses
+        tickets_purchased = params[:tickets_purchased]
+        
+        if tickets_purchased
+
+          tickets_purchased.each do |status, num_purchased|
+
+            # The status they want to purchase
+            tickets_with_status = event.tickets.where(status: status.downcase)
+
+            # Check if the status exists
+            unless tickets_with_status.any?
+              tickets.push(event_id: params[:event_id], success: false, message: "No tickets with status: #{status}")
+              next
+            end
+
+            ticket_status = tickets_with_status.first.ticket_status
+
+            # The tickets that are remaining / available for purchase
+            remaining_tickets = event.tickets.with_status(status).unowned
+
+            # The number of tickets they want to buy
+            number_purchased = 0
+            begin
+              number_purchased = num_purchased.to_i
+            rescue
+              tickets.push(event_id: params[:event_id], success: false, status: :invalid_json, message: "Number of tickets to purchase must be a number")
+              next
+            end
+
+
+            # Cannot buy more tickets than are available
+            if number_purchased > remaining_tickets.count
+              tickets.push(event_id: params[:event_id], success: false, message: "Trying to buy #{number_purchased} \"#{status}\" tickets when only #{remaining_tickets.count} remain")
+              next
+            end
+            
+            # The tickets I currently own for this EVENT and this STATUS
+            currently_owned = @current_user.tickets.where(event_id: params[:event_id]).with_status(status)
+
+            # Cannot buy more than you're allowed
+            if currently_owned.count + number_purchased > ticket_status.max_purchasable
+              tickets.push(event_id: params[:event_id], success: false, message: "Cannot buy #{number_purchased} tickets with cap of #{ticket_status.max_purchasable}")
+              next
+            end
+
+            # Otherwise we can buy the tickets!
+            tickets_to_buy = tickets_with_status.take(number_purchased)
+            tickets_to_buy.each do |ticket|
+              ticket.user = @current_user
+              ticket.save!
+              tickets.push(event_id: params[:event_id], success: true)
+            end
+
+          end
+          
+        else
+          ticket_ids.each do |ticket_id|
+            ticket = event.tickets.find_by(id: ticket_id)
+            if ticket
+              ticket.update!(user_id: @current_user.id)
+              ticket.save!
+              tickets.push(ticket.as_json().merge(success: true))
+            else
+              tickets.push(event_id: params[:event_id], id: ticket_id, success: false)
+            end
           end
         end
 
