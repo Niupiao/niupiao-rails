@@ -35,39 +35,25 @@ class TicketsTest < ActionDispatch::IntegrationTest
       event_id: @event.id,
       tickets_purchased: {
         general: 2, 
-        fish: 3,
-        general: 'f'
+        fish: 3 #, general: 'f'   # TODO POSTing duplicate keys fails
       }
     }
     
     puts prettify(json)
-    assert_equal true, json[0]['success']
-    assert_equal @event.id, json[0]['event_id']
+    assert_equal true, json['general']['success']
+    assert_equal @event.id, json['general']['event_id'].to_i
 
-    assert_equal false, json[1]['success']
-    assert_equal @event.id, json[1]['event_id']
-    assert_equal "No tickets with status: fish", json[1]['message']
-  end
-
-  test "should purchase multiple tickets by id" do
-    t1 = Ticket.create!(event: @event, ticket_status: @general)
-    t2 = Ticket.create!(event: @event, ticket_status: @general)
-    t3 = Ticket.create!(event: @event, ticket_status: @general)
-
-    auth_post "/buy.json", @user1.api_key.access_token, {
-      event_id: @event.id,
-      ticket_ids: [t1.id, t2.id, t3.id, 4]
-    }
+    assert_equal false, json['fish']['success']
+    assert_equal @event.id, json['fish']['event_id'].to_i
+    assert_equal "No tickets with status: fish", json['fish']['message']
 
     t1 = t1.reload
     t2 = t2.reload
     t3 = t3.reload
     assert @user1.owns?(t1), "User does not own ticket..."
     assert @user1.owns?(t2), "User does not own ticket..."
-    assert @user1.owns?(t3), "User does not own ticket..."
-    assert_equal @user1, t1.reload.user, "User does not own ticket..."
-    assert_equal @user1, t2.reload.user, "User does not own ticket..."
-    assert_equal @user1, t2.reload.user, "User does not own ticket..."
+    assert_equal @user1, t1.user, "User does not own ticket..."
+    assert_equal @user1, t2.user, "User does not own ticket..."
   end
 
   test "should buy ticket" do
