@@ -35,8 +35,8 @@ class TicketTest < ActiveSupport::TestCase
     t2.save!
     assert_equal 3, @event.tickets.unowned.count
 
-    assert_equal 2, @event.tickets.with_status('General').count
-    assert_equal 2, @event.tickets.with_status('VIP').count
+    assert_equal 2, @event.tickets.with_status('General'.downcase).count
+    assert_equal 2, @event.tickets.with_status('VIP'.downcase).count
     
 
   end
