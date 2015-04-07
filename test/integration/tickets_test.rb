@@ -40,6 +40,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
     }
     
     puts prettify(json)
+    assert_equal 2, @user1.tickets.count
     assert_equal true, json['general']['success']
     assert_equal @event.id, json['general']['event_id'].to_i
 

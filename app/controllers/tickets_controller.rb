@@ -76,14 +76,18 @@ class TicketsController < ApplicationController
             tickets_to_buy.each do |ticket|
               ticket.user = @current_user
               ticket.save!
-              tickets[status] = {event_id: params[:event_id], success: true}
+              tickets[status] = {
+                event_id: params[:event_id],
+                success: true,
+                ticket: ticket
+              }
             end
 
           end
           
         end
 
-        render json: tickets
+        render json: tickets.merge(event: event) 
       end
     end
   end
