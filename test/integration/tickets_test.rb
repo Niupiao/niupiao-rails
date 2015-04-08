@@ -31,10 +31,13 @@ class TicketsTest < ActionDispatch::IntegrationTest
     t2 = Ticket.create!(event: @event, ticket_status: @general)
     t3 = Ticket.create!(event: @event, ticket_status: @general)
 
+    t4 = Ticket.create!(event: @event, ticket_status: @vip)
+    
     auth_post "/buy.json", @user1.api_key.access_token, {
       event_id: @event.id,
       tickets_purchased: {
-        general: 2, 
+        general: 2,
+        vip: 2,
         fish: 3 #, general: 'f'   # TODO POSTing duplicate keys fails
       }
     }

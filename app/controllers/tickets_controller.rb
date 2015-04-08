@@ -58,7 +58,7 @@ class TicketsController < ApplicationController
 
             # CANNOT BUY MORE THAN EXIST: Cannot buy more tickets than are available
             if number_purchased > remaining_tickets.count
-              tickets[status] = {event_id: params[:event_id], success: false, message: "Trying to buy #{number_purchased} \"#{status}\" tickets when only #{remaining_tickets.count} remain"}
+              tickets[status] = {event_id: params[:event_id], success: false, message: "Trying to buy #{number_purchased} '#{status}' tickets when only #{remaining_tickets.count} remain"}
               next
             end
             
@@ -73,14 +73,17 @@ class TicketsController < ApplicationController
 
             # Otherwise we can buy the tickets!
             tickets_to_buy = tickets_with_status.take(number_purchased)
+            tickets[status] = {
+              event_id: params[:event_id],
+              success: true
+            }
+            tickets[status]['tickets'] = []
             tickets_to_buy.each do |ticket|
               ticket.user = @current_user
               ticket.save!
-              tickets[status] = {
-                event_id: params[:event_id],
-                success: true,
+              tickets[status]['tickets'].push({
                 ticket: ticket
-              }
+              })
             end
 
           end
