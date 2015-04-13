@@ -7,14 +7,10 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <header class="navbar navbar-fixed-top navbar-inverse">
-    <ul class="nav navbar-nav navbar-right">
-      <li><%= link_to "Home",   '#' %></li>
-      <li><%= link_to "About Us",   '#' %></li>
-    </ul>
-  </header>
+  <%= render 'layouts/header' %>
   <div class="container">
     <%= yield %>
+    <%= render 'layouts/footer' %>
   </div>
 </body>
 </html>
