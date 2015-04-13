@@ -3,10 +3,14 @@
     <nav>
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",    root_path %></li>
-        <li><%= link_to "Manage Events", '#' %></li>
-        <li><%= link_to "Buy Tickets",    '#' %></li>
-        <li><%= link_to "Log in",  login_path %></li>
-        <li><%= link_to "Log out", logout_path, method: :delete %></li>
+        <% if logged_in? %>
+            <li><%= link_to "Manage Events", '#' %></li>
+            <li><%= link_to "Buy Tickets",    '#' %></li>
+            <li><%= link_to "Log out", logout_path, method: :delete %></li>
+        <% else %>
+            <li><%= link_to "Log in",  login_path %></li>
+        <% end %>
+        </li>
       </ul>
     </nav>
   </div>
