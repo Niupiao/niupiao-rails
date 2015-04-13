@@ -4,7 +4,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li><%= link_to "Home",    root_path %></li>
         <% if logged_in? %>
-            <li><%= link_to "Manage Events", '#' %></li>
+            <li><%= link_to "Manage Events", events_path %></li>
             <li><%= link_to "Buy Tickets",    '#' %></li>
             <li><%= link_to "Log out", logout_path, method: :delete %></li>
         <% else %>

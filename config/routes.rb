@@ -12,6 +12,8 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'sessions#signup_page'
   post 'signup', to: 'sessions#signup'
+  
+  get 'events', to: 'events#index'
 
   get 'me/tickets', to: 'tickets#my_tickets'
 
