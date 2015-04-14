@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
 
-  root 'sessions#new'
+  get 'static_pages/home'
+  get 'static_pages/about'
+
+  root 'static_pages#home'
 
   get 'login',     to: 'sessions#new'
   post 'login',    to: 'sessions#create'
@@ -9,6 +12,8 @@ Rails.application.routes.draw do
 
   get 'signup', to: 'sessions#signup_page'
   post 'signup', to: 'sessions#signup'
+  
+  get 'events', to: 'events#index'
 
   get 'me/tickets', to: 'tickets#my_tickets'
 

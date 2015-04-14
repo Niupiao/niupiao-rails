@@ -9,19 +9,32 @@
 <%= link_to 'New Event', new_event_path %>
 <%= link_to 'Log out', logout_path, method: :delete %>
 
-<div class="gallery">
-  <ul>
-    <% Event.all.each do |event| %>
-      <li>
-	<a href=<%= event_url(event) %> title=<%= event.name %> target="_blank">
-          <img src=<%= event.image_path %> alt="" />
-          <div class="info">
-	    <h1 class="title"><%= event.name %></h1>
-	    <h2 class="date"><%= event.date %></h2>
-	    <h2 class="tickets"><%= "#{event.tickets_sold} out of #{event.total_tickets} tickets sold" %></h2>
-	  </div>
-        </a>
-      </li>
-    <% end %>
-  </ul>
+<table>
+  <% Event.all.each do |event| %>   
+    <tr>
+        <td> 
+          <%= event.name %>
+        </td>
+        <td> 
+          <%= event.organizer %>
+        </td>
+        <td> 
+          <%= event.location %>
+        </td>
+        <td> 
+          <%= event.description %>
+        </td>
+        <td> 
+          <%= event.image_path %>
+        </td>
+        <td> 
+          <%= event.link %>
+        </td>
+        <td> 
+          <%= event.total_tickets %>
+        </td>
+      <% end %>
+    </tr>
+</table>
+
 </div>
