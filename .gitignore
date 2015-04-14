@@ -41,8 +41,3 @@ bower.json
 # Ignore solr stuff
 solr/*/data
 *.pid
-
-#Ignore Cloud9 residue
-.c9/
-/ .c9/
-\RackMultipart*
