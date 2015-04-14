@@ -16,12 +16,5 @@
   <%= f.file_field :image %>
   <br>
   
-  <p>Creating new Ticket Types</p>
-  <%= f.fields_for :ticket_statuses_attributes do |builder| %>
-    <%= render "event_ticket_status_field", :f => builder %>
-  <% end %>
-  
-  <p><%= link_to_add_ticket_status "Add Ticket Status", f, :ticket_statuses %></p>
-  
   <%= f.submit 'Create' %>
 <% end %>
