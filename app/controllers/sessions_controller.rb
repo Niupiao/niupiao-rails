@@ -149,8 +149,8 @@ class SessionsController < ApplicationController
     end
 
   end
-  
-  
+
+
   private
 
   def authenticate(email, password)
