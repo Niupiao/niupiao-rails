@@ -97,3 +97,16 @@ $(function () {
                                                                                                                                                       });
 
                                                                                                                                                       });
+
+function remove_ticket_status(link) {
+  $(link).previous("input[type=hidden]").value = "1";
+  $(link).up(".ticket_status").hide();
+}
+
+function add_fields(link, association, content) {
+  var new_id = new Date().getTime(); //Used to get a unique id.
+  var regexp = new RegExp("new_" + association, "g")
+  $(link).up().insert({
+    before: content.replace(regexp, new_id)
+  });
+}
