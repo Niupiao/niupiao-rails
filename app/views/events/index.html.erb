@@ -7,7 +7,6 @@
 </div>
 
 <%= link_to 'New Event', new_event_path %>
-<%= link_to 'Log out', logout_path, method: :delete %>
 
 <table>
   <% Event.all.each do |event| %>   
@@ -16,22 +15,16 @@
           <%= event.name %>
         </td>
         <td> 
-          <%= event.organizer %>
-        </td>
-        <td> 
           <%= event.location %>
-        </td>
-        <td> 
-          <%= event.description %>
-        </td>
-        <td> 
-          <%= event.image_path %>
         </td>
         <td> 
           <%= event.link %>
         </td>
         <td> 
           <%= event.total_tickets %>
+        </td>
+        <td>
+          <%= link_to 'Edit Basic Details', edit_event_path(event) %>
         </td>
       <% end %>
     </tr>

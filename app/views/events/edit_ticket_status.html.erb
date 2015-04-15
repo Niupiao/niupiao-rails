@@ -1,0 +1,9 @@
+<h1>Update Tickets for your Event</h1>
+
+<div class="row">
+    <%= form_for @event do |f| %>
+        <% fields_for :ticket_statuses_attributes, @ticket_status do |builder| %>
+            <%= render "event_ticket_status_field", :f => builder %>
+        <% end %>
+    <%= f.submit "Submit" %>
+</div>

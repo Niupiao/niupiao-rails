@@ -1,0 +1,30 @@
+<h1>Update your Event</h1>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+      <%= form_for @event, html: { multipart: true, class: 'nifty_form' } do |f| %>
+          <%= f.label :name %>
+          <%= f.text_field :name, class: 'form_control' %>
+          
+          <%= f.label :organizer %>
+          <%= f.text_field :organizer, class: 'form-control' %>
+          
+          <%= f.label :location %>
+          <%= f.text_field :location, class: 'form-control' %>
+          
+          <%= f.label :date %>
+          <%= f.text_field :date, class: 'form-control', placeholder: 'date, ex: "April 12, 2015"' %>
+          
+          <%= f.label :description %>
+          <%= f.text_field :description, class: 'form-control' %>
+          
+          <%= f.label :link %>
+          <%= f.text_field :link, class: 'form-control' %>
+          
+          <%= f.label :total_tickets %>
+          <%= f.text_field :total_tickets, class: 'form-control' %>
+          
+          <%= f.submit 'Save Changes', class: "btn btn-primary" %>
+        <% end %>  
+    </div>
+</div>
