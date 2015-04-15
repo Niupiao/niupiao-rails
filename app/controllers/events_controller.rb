@@ -5,6 +5,7 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    @event.ticket_statuses.build
   end
 
   def create
@@ -73,7 +74,7 @@ class EventsController < ApplicationController
                                   :image,
                                   :link,
                                   :total_tickets,
-                                  ticket_statuses_attributes: [:name, :max_purchasable, :price]
+                                  ticket_statuses_attributes: [:name, :max_purchasable, :price, :_destroy]
                                   )
   end
 

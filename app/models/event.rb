@@ -5,7 +5,10 @@ class Event < ActiveRecord::Base
            after_remove: :decrement_total_tickets
   has_many :ticket_statuses
 
-  accepts_nested_attributes_for :ticket_statuses  
+  accepts_nested_attributes_for :ticket_statuses, 
+                                #Rejects ticket statuses with blank names as an extra precaution.
+                                reject_if: lambda { |status| status[:name].blank? }, 
+                                allow_destroy: true #Ticket statuses can be destroyed.
 
   validates :name, :date, presence: true
 
