@@ -14,6 +14,42 @@ class TicketsController < ApplicationController
     end
   end
 
+  def inform
+    respond_to do |format|
+      format.json do
+        # Informs user of what they can buy for particular event
+        event_id = params[:event_id]
+        event = Event.find(event_id)
+
+        # The JSONObject response
+        res = {}
+        
+        # All the tickets I own for this event
+        my_tickets = @current_user.tickets.for_event(event)
+
+        # Loop through each of the event's statuses to see what can be bought
+        event.ticket_statuses.each do |ticket_status|
+
+          # Number of remaining tickets with this status
+          in_stock = event.tickets.with_status(ticket_status.name).count
+
+          # Number of tickets with this status that we own
+          mine = my_tickets.with_status(ticket_status.name).count
+
+          # Number of tickets I could buy, assuming ample stock
+          could_buy = ticket_status.max_purchasable - mine
+
+          # The number of buyable tickets is the 
+          res[ticket_status.name] = [in_stock, could_buy].min
+          res["#{ticket_status.name}_message"] = "#{in_stock} in stock, #{could_buy} could buy"
+        end
+
+        # Render the response
+        render json: res
+      end
+    end
+  end
+  
   def batch_buy
     respond_to do |format|
       format.json do

@@ -5,7 +5,7 @@ class TicketsTest < ActionDispatch::IntegrationTest
   include IntegrationHelperTest
 
   def setup
-    @event = Event.create!(
+    @event ||= Event.create!(
                            name: 'TestEvent',
                            date: DateTime.now,
                            organizer: 'TestOrganizer',
@@ -16,16 +16,62 @@ class TicketsTest < ActionDispatch::IntegrationTest
                            total_tickets: 0,
                            tickets_sold: 0
                            )
-    @general = TicketStatus.create!(name: "General", max_purchasable: 3, price: 50)
-    @vip = TicketStatus.create!(name: "VIP", max_purchasable: 2, price: 150)
+    @general ||= TicketStatus.create!(name: "General", max_purchasable: 3, price: 50)
+    @vip ||= TicketStatus.create!(name: "VIP", max_purchasable: 2, price: 150)
     @event.ticket_statuses << @general
     @event.ticket_statuses << @vip
     @event.save!
 
-    @user1 = User.create!(email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
-    @user2 = User.create!(email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon',  first_name: 'Ryan',  last_name: 'Kwon')
+    @user1 ||= User.create!(email: 'kmc3@williams.edu', password: 'foobar', name: 'Kevin Chen', first_name: 'Kevin', last_name: 'Chen')
+    @user2 ||= User.create!(email: 'rhk1@williams.edu', password: 'foobar', name: 'Ryan Kwon',  first_name: 'Ryan',  last_name: 'Kwon')
   end
 
+  def teardown
+    @event.tickets.destroy_all
+  end
+  
+  test "should inform user what they can buy" do
+    
+    # Create general tickets
+    t1 = Ticket.create!(event: @event, ticket_status: @general)
+    t2 = Ticket.create!(event: @event, ticket_status: @general)
+    t3 = Ticket.create!(event: @event, ticket_status: @general)
+
+    # Create VIP tickets
+    t4 = Ticket.create!(event: @event, ticket_status: @vip)
+
+    # ask what we can buy
+    auth_post "/buywhat.json", @user1.api_key.access_token, {
+                event_id: @event.id
+              }
+
+    gen_count = @event.tickets.with_status(@general.name).count
+    assert_equal 3, gen_count
+    
+    vip_count = @event.tickets.with_status(@vip.name).count
+    assert_equal 1, vip_count
+    
+    # we should be able to buy as much as we can
+    assert_equal [gen_count, @general.max_purchasable].min, json['general']
+    assert_equal [vip_count, @vip.max_purchasable].min, json['vip']
+
+    # Buy a General and VIP ticket
+    #t3.user = @user1
+    #t4.user = @user1
+    #t3.save!
+    #t4.save!
+    auth_post "/buy.json", @user1.api_key.access_token, { event_id: @event.id, tickets_purchased: { general: 1, vip: 1 } }
+
+    # check again now
+    auth_post "/buywhat.json", @user1.api_key.access_token, {
+                event_id: @event.id
+              }
+    puts json
+    assert_equal gen_count - 1, json['general']
+    assert_equal vip_count - 1, json['vip']
+    
+  end
+  
   test "should purchase multiple tickets by status" do
     t1 = Ticket.create!(event: @event, ticket_status: @general)
     t2 = Ticket.create!(event: @event, ticket_status: @general)

@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   get 'me/tickets', to: 'tickets#my_tickets'
 
   post '/buy', to: 'tickets#batch_buy'
+  post '/buywhat', to: 'tickets#inform'
   post '/events/:event_id/tickets/:ticket_id/buy', to: 'tickets#buy'
   resources :events do
     resources :tickets, shallow: true
