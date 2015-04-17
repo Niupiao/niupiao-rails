@@ -106,5 +106,5 @@ function remove_ticket_status(link) {
 function add_fields(link, association, content) {
   var new_id = new Date().getTime(); //Used to get a unique id.
   var regexp = new RegExp("new_" + association, "g");
-  $(link).parent().before(content.replace(regexp, new_id));
+  $(link).before(content.replace(regexp, new_id));
 }

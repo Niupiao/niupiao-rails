@@ -24,7 +24,20 @@
           <%= f.label :total_tickets %>
           <%= f.text_field :total_tickets, class: 'form-control' %>
           
-          <%= f.submit 'Save Changes', class: "btn btn-primary" %>
+          <%= f.label :image %>
+          <%= f.file_field :image, class: 'form-control' %>
+          
+          <h2>What kind of Tickets will be Sold?</h2>
+          <%= f.fields_for :ticket_statuses do |builder| %>
+            <%= render 'ticket_status_fields', :f => builder %>
+          <% end %>
+          
+          <br>
+          <%= link_to_add_ticket_status "Add Ticket Status", f, :ticket_statuses %>
+          <br>
+          <br>
+          
+          <%= f.submit 'Create Event', class: "btn btn-primary" %>
         <% end %>  
     </div>
 </div>
