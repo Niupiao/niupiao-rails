@@ -5,6 +5,7 @@ class EventsController < ApplicationController
 
   def new
     @event = Event.new
+    @event.ticket_statuses.build
   end
 
   def create
@@ -47,6 +48,22 @@ class EventsController < ApplicationController
     end
   end
   
+  def edit
+    @event = Event.find(params[:id])
+  end
+  
+  def update
+    @event = Event.find(params[:id])
+    if @event.update_attributes(event_params)
+      flash[:success] = "Event updated!"
+      redirect_to events_path
+    else
+      render 'edit'
+    end
+  end
+  
+  
+  
   private
   def event_params
     params.require(:event).permit(:name, 
@@ -57,7 +74,7 @@ class EventsController < ApplicationController
                                   :image,
                                   :link,
                                   :total_tickets,
-                                  ticket_statuses_attributes: [:name, :max_purchasable, :price]
+                                  ticket_statuses_attributes: [:name, :max_purchasable, :price, :_destroy]
                                   )
   end
 
