@@ -51,4 +51,11 @@ class ManagerTest < ActiveSupport::TestCase
     assert_not @manager.valid?
   end
   
+  test "email addresses should be saved as lower-case" do
+    mixed_case_email = "Foo@ExAMPle.CoM"
+    @manager.email = mixed_case_email
+    @manager.save
+    assert_equal mixed_case_email.downcase, @manager.reload.email
+  end
+  
 end
