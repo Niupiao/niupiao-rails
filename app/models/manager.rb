@@ -7,4 +7,11 @@ class Manager < ActiveRecord::Base
                       uniqueness: { case_sensitive: false }
     has_secure_password
     validates :password, length: { minimum: 6 }
+    
+    has_many :events, dependent: :destroy
+    
+    accepts_nested_attributes_for :events, 
+                                #Rejects ticket statuses with blank names as an extra precaution.
+                                reject_if: lambda { |status| status[:name].blank? }, 
+                                allow_destroy: true #Ticket statuses can be destroyed.
 end

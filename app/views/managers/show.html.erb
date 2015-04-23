@@ -1,1 +1,33 @@
-<%= @manager.organization %>
+<h1>Events for <%= @manager.organization %></h1>
+
+<div class="notice">
+  <p style="color:red">
+    <%= flash.now[:notice] if flash[:notice] %>
+  </p>
+</div>
+
+<%= link_to 'New Event', new_event_path %>
+
+<table>
+  <% @manager.events.each do |event| %>
+    <tr>
+        <td> 
+          <%= event.name %>
+        </td>
+        <td> 
+          <%= event.location %>
+        </td>
+        <td> 
+          <%= event.link %>
+        </td>
+        <td> 
+          <%= event.total_tickets %>
+        </td>
+        <td>
+          <%= link_to 'Edit Basic Details', edit_event_path(event) %>
+        </td>
+      <% end %>
+    </tr>
+</table>
+
+</div>

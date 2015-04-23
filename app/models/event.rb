@@ -4,6 +4,7 @@ class Event < ActiveRecord::Base
            after_add: :increment_total_tickets,
            after_remove: :decrement_total_tickets
   has_many :ticket_statuses
+  belongs_to :manager
 
   accepts_nested_attributes_for :ticket_statuses, 
                                 #Rejects ticket statuses with blank names as an extra precaution.
