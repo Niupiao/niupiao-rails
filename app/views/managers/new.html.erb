@@ -1,2 +1,24 @@
-<h1>Managers#new</h1>
-<p>Find me in app/views/managers/new.html.erb</p>
+<h1>Register your Group</h1>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        <%= form_for @manager, html: { multipart: true, class: 'nifty_form' } do |f| %>
+            <%= render 'shared/error_messages' %>
+
+            <%= f.label :organization %>
+            <%= f.text_field :organization, class: 'form_control' %>
+
+            <%= f.label :email %>
+            <%= f.text_field :email, class: 'form_control' %>
+
+            <%= f.label :password %>
+            <%= f.password_field :password, class: 'form_control' %>
+
+            <%= f.label :password_confirmation %>
+            <%= f.password_field :password_confirmation, class: 'form_control' %>
+
+            <%= f.submit("Signup") %>
+        <% end %>
+
+    </div>
+</div>
