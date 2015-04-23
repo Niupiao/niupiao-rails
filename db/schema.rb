@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150315213208) do
+ActiveRecord::Schema.define(version: 20150423014021) do
 
   create_table "api_keys", force: :cascade do |t|
     t.integer  "user_id"
@@ -51,6 +51,16 @@ ActiveRecord::Schema.define(version: 20150315213208) do
   end
 
   add_index "facebook_identities", ["user_id"], name: "index_facebook_identities_on_user_id"
+
+  create_table "managers", force: :cascade do |t|
+    t.string   "email"
+    t.string   "organization"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "password_digest"
+  end
+
+  add_index "managers", ["email"], name: "index_managers_on_email", unique: true
 
   create_table "ticket_statuses", force: :cascade do |t|
     t.string   "name"
