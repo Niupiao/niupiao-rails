@@ -62,6 +62,9 @@ class TicketsTest < ActionDispatch::IntegrationTest
     #t4.save!
     auth_post "/buy.json", @user1.api_key.access_token, { event_id: @event.id, tickets_purchased: { general: 1, vip: 1 } }
 
+    puts "sleeping..."
+    sleep 5.second
+    
     # check again now
     auth_post "/buywhat.json", @user1.api_key.access_token, {
                 event_id: @event.id
