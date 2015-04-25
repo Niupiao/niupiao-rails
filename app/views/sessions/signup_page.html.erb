@@ -7,17 +7,7 @@
   </p>
 </div>
 
-<%= link_to "Register as a Manager", new_manager_path %>
-
 <%= form_for :session, url: signup_path, method: :post do |f| %>
-
-  <%= f.text_field :first_name, placeholder: 'first name' %>
-  <br>
-  <%= f.text_field :last_name, placeholder: 'last name' %>
-  <br>
-  <%= f.text_field :email, placeholder: 'email' %>
-  <br>
-  <%= f.password_field :password, placeholder: 'password' %>
-  <br>
-  <%= f.submit("Signup") %>
+  <%= f.label "Are you a manager?" %>
+  <%= link_to_add_ticket_status "Add Ticket Status", f %>
 <% end %>

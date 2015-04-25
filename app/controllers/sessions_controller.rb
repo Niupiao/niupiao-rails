@@ -152,8 +152,12 @@ class SessionsController < ApplicationController
   
   
   private
-
   def authenticate(email, password)
     User.find_by(email: email, password: password)
+  end
+  
+  private
+  def authenticate_manager(email, password)
+    Manager.find_by(email: email, password: password)
   end
 end

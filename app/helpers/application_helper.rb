@@ -27,4 +27,13 @@ module ApplicationHelper
     end
     link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
   end
+  
+  #Allows signup form to change content based on whether or not user is a Manager or a Fan.
+  def link_to_change_form(name, f, is_manager)
+    if is_manager
+      render("manager_signup", :f => builder)
+    else
+      #other stuff
+    end
+  end
 end
