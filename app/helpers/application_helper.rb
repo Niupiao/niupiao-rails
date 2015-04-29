@@ -25,15 +25,11 @@ module ApplicationHelper
     fields = f.fields_for(association, new_object, :child_index => "new_#{association}") do |builder|
       render(association.to_s.singularize + "_fields", :f => builder)
     end
-    link_to_function(name, "add_fields(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
+    link_to_function(name, "add_fields_before(this, \"#{association}\", \"#{escape_javascript(fields)}\")")
   end
   
   #Allows signup form to change content based on whether or not user is a Manager or a Fan.
   def link_to_change_form(name, f, is_manager)
-    if is_manager
-      render("manager_signup", :f => builder)
-    else
-      #other stuff
-    end
+    link_to_function(name, "change_signup_form(this, is_manager)")
   end
 end

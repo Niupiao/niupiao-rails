@@ -103,14 +103,25 @@ function remove_ticket_status(link) {
   $(link).closest('.fields').hide();
 }
 
-function add_fields(link, association, content) {
+function add_fields_before(link, association, content) {
   var new_id = new Date().getTime(); //Used to get a unique id.
   var regexp = new RegExp("new_" + association, "g");
   $(link).before(content.replace(regexp, new_id));
 }
 
 function add_fields_after(link, association, content) {
- var new_id = new Date().getTime(); //Used to get a unique id.
-  var regexp = new RegExp("new_" + association, "g");
-  $(link).after(content.replace(regexp, new_id));   
+    var new_id = new Date().getTime(); //Used to get a unique id.
+    var regexp = new RegExp("new_" + association, "g");
+    $(link).after(content.replace(regexp, new_id));   
+}
+
+function change_signup_form(link, is_manager, manager_content, fan_content) {
+    var new_id = new Date().getTime(); //Retrieving a unique id.
+    var form = "form"
+    if (is_manager){
+        $(link).after(manager_content.replace(form, new_id))
+    }
+    else {
+        $(link).after(fan_content.replace(form, new_id))
+    }
 }
