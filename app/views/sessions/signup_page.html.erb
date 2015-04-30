@@ -8,6 +8,7 @@
 
   <h3>Are you a manager?</h3>
   <%= link_to_function "Yes", "remove_ticket_status(this)" %>
+  
 <%= form_for :session, url: signup_path, method: :post do |f| %>
   <%= render 'manager_signup', :f => f if @is_manager %>
   <%= render 'user_signup', :f => f unless @is_manager %>

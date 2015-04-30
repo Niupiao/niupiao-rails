@@ -115,6 +115,7 @@ function add_fields_after(link, association, content) {
     $(link).after(content.replace(regexp, new_id));   
 }
 
+//Does not function as of this commment. TODO: Complete.
 function change_signup_form(link, is_manager, manager_content, fan_content) {
     var new_id = new Date().getTime(); //Retrieving a unique id.
     var form = "form"
