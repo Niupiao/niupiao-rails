@@ -3,7 +3,14 @@ class SessionsController < ApplicationController
   wrap_parameters format: [:json, :xml, :html]
 
   def new
-    @user = User.new
+    put "params.... #{params}"
+    type = params[:user_type] || params[:session][:user_type]
+    sessions[:user_type] = type if type
+    if type == "Manager"
+      @manager = Manager.new
+    elsif type == "Fan"
+      @user = User.new
+    end
     render 'sessions/login'
   end
 
@@ -152,12 +159,10 @@ class SessionsController < ApplicationController
   
   
   private
-  def authenticate(email, password)
-    User.find_by(email: email, password: password)
-  end
   
-  private
-  def authenticate_manager(email, password)
-    Manager.find_by(email: email, password: password)
+  def authenticate(email, password)
+    manager = Manager.find_by(email: email, password: password)
+    user = User.find_by(email: email, password: password)
+    return user ? manager.nil? : manager
   end
 end

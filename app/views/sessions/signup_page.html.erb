@@ -5,11 +5,11 @@
     <%= flash[:notice] if flash[:notice] %>
   </p>
 </div>
-
-  <h3>Are you a manager?</h3>
-  <%= link_to_function "Yes", "remove_ticket_status(this)" %>
   
 <%= form_for :session, url: signup_path, method: :post do |f| %>
+  <h3>Are you a manager?</h3>
+  <%=radio_button_tag 'user_type', 'Manager'%>
+  <%=radio_button_tag 'user_type', 'Fan'%>
   <%= render 'manager_signup', :f => f if @is_manager %>
   <%= render 'user_signup', :f => f unless @is_manager %>
   <%= f.submit 'Submit', class: "btn btn-primary" %>
