@@ -29,6 +29,7 @@ class TicketsController < ApplicationController
 
         # Loop through each of the event's statuses to see what can be bought
         event.ticket_statuses.each do |ticket_status|
+          
 
           # Number of remaining tickets with this status
           in_stock = event.tickets.with_status(ticket_status.name).count
@@ -37,7 +38,7 @@ class TicketsController < ApplicationController
           mine = my_tickets.with_status(ticket_status.name).count
 
           # Number of tickets I could buy, assuming ample stock
-          could_buy = ticket_status.max_purchasable - mine
+          could_buy = in_stock - mine
 
           # The number of buyable tickets is the 
           res[ticket_status.name] = [in_stock, could_buy].min
@@ -109,6 +110,7 @@ class TicketsController < ApplicationController
 
             # Otherwise we can buy the tickets!
             tickets_to_buy = tickets_with_status.take(number_purchased)
+            
             tickets[status] = {
               event_id: params[:event_id],
               success: true
