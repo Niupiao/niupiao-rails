@@ -38,7 +38,7 @@ class TicketsController < ApplicationController
           mine = my_tickets.with_status(ticket_status.name).count
 
           # Number of tickets I could buy, assuming ample stock
-          could_buy = in_stock - mine
+          could_buy = [ticket_status.max_purchasable, in_stock].min - mine
 
           # The number of buyable tickets is the 
           res[ticket_status.name] = [in_stock, could_buy].min
