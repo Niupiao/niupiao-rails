@@ -1,4 +1,6 @@
 class Ticket < ActiveRecord::Base
+
+  scope :for_event, ->(event) { where(event_id: event.id) }
   scope :owned_by, ->(user) { where(user_id: user.id) }
   scope :unowned, -> { where(user_id: nil) }
   scope :with_status, ->(status) { where(status: status) }
