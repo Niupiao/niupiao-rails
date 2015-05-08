@@ -32,13 +32,13 @@ class TicketsController < ApplicationController
           
 
           # Number of remaining tickets with this status
-          in_stock = event.tickets.with_status(ticket_status.name).count
+          in_stock = event.tickets.with_status(ticket_status.name).unowned.count
 
           # Number of tickets with this status that we own
           mine = my_tickets.with_status(ticket_status.name).count
-
+          
           # Number of tickets I could buy, assuming ample stock
-          could_buy = [ticket_status.max_purchasable, in_stock].min - mine
+          could_buy = [in_stock, ticket_status.max_purchasable - mine].min
 
           # The number of buyable tickets is the 
           res[ticket_status.name] = [in_stock, could_buy].min
